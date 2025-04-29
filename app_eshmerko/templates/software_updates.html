@@ -1,0 +1,19 @@
+<!-- software_updates.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Обновления ПО</h1>
+  <ul>
+    {% for program in programs %}
+      <li>
+        <h2>{{ program.name }}</h2>
+        <p>{{ program.description }}</p>
+        {% if program.download_file %}
+          <a href="{% url 'download_program' program.id %}">Скачать</a> (Скачано: {{ program.download_count }} раз)
+        {% else %}
+          <p>Файл не доступен для скачивания</p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

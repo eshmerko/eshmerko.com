@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Обновления программного обеспечения{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Обновления программного обеспечения</h1>
+    
+    {% if programs_with_updates %}
+        {% for item in programs_with_updates %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>{{ item.program.name }}</h2>
+                    <p>{{ item.program.description }}</p>
+                    {% if item.program.download_file %}
+                        <a href="{% url 'download_program' item.program.id %}" class="btn btn-primary">
+                            Скачать ({{ item.program.download_count }} скачиваний)
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <div class="card-body">
+                    <h3>История обновлений</h3>
+                    {% if item.updates %}
+                        <div class="list-group">
+                            {% for update in item.updates %}
+                                <div class="list-group-item">
+                                    <h4>Версия {{ update.version }} ({{ update.release_date|date:"d.m.Y" }})</h4>
+                                    <p>{{ update.description }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Нет доступных обновлений.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            Программы не найдены.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
