@@ -7,4 +7,6 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('software_updates/', views.software_updates, name='software_updates'),
     path('download/<int:program_id>/', views.download_program, name='download_program'),
+    path('api/check-update/<str:program_name>/<str:current_version>/', views.check_update),
+    path('download/update/<int:update_id>/', views.download_update, name='download_update'),
 ]

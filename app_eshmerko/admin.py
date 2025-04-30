@@ -28,3 +28,22 @@ class ProgramAdmin(admin.ModelAdmin):
 
 admin.site.register(Program, ProgramAdmin)
 admin.site.register(Update)
+
+class UpdateAdmin(admin.ModelAdmin):
+    list_display = ('program', 'version', 'release_date', 'is_active', 'download_count')
+    list_filter = ('program', 'is_active')
+    search_fields = ('version', 'program__name')
+    readonly_fields = ('download_count',)  # Теперь поле существует
+    
+    fieldsets = (
+        (None, {
+            'fields': ('program', 'version', 'file', 'is_active', 'download_count')
+        }),
+        ('Release Info', {
+            'fields': ('release_date', 'description'),
+            'classes': ('collapse',)
+        }),
+    )
+
+admin.site.unregister(Update)
+admin.site.register(Update, UpdateAdmin)

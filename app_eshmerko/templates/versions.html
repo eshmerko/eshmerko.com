@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - eshmerko.com{% endblock %}
+
+{% block content %}
+    <h1>Доступные версии для {{ program }}</h1>
+        
+        <div class="versions-list">
+            {% for version in versions %}
+            <div class="version-card">
+                <h3>Версия {{ version.version }}</h3>
+                <p>Дата выпуска: {{ version.release_date }}</p>
+                <p>Описание: {{ version.description }}</p>
+                
+                <div class="download-links">
+                    <a href="{{ version.file.url }}" class="download-btn">
+                        Скачать ({{ version.file.size|filesizeformat }})
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p>Нет доступных обновлений</p>
+            {% endfor %}
+        </div>
+{% endblock %}

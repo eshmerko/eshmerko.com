@@ -12,11 +12,6 @@
                 <div class="card-header">
                     <h2>{{ item.program.name }}</h2>
                     <p>{{ item.program.description }}</p>
-                    {% if item.program.download_file %}
-                        <a href="{% url 'download_program' item.program.id %}" class="btn btn-primary">
-                            Скачать ({{ item.program.download_count }} скачиваний)
-                        </a>
-                    {% endif %}
                 </div>
                 
                 <div class="card-body">
@@ -25,20 +20,42 @@
                         <div class="list-group">
                             {% for update in item.updates %}
                                 <div class="list-group-item">
-                                    <h4>Версия {{ update.version }} ({{ update.release_date|date:"d.m.Y" }})</h4>
-                                    <p>{{ update.description }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4>Версия {{ update.version }} ({{ update.release_date|date:"d.m.Y" }})</h4>
+                                            <p>{{ update.description }}</p>
+                                        </div>
+                                        <div class="text-end">
+                                            {% if update.file %}
+                                                <a href="{% url 'download_update' update.id %}" 
+                                                   class="btn btn-success btn-sm">
+                                                    Скачать обновление
+                                                </a>
+                                                <small class="text-muted d-block mt-1">
+                                                    {{ update.download_count }} скачиваний
+                                                </small>
+                                            {% endif %}
+                                            {% if update.is_active %}
+                                                <span class="badge bg-success">Активно</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Архив</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p>Нет доступных обновлений.</p>
+                        <div class="alert alert-info">
+                            Нет доступных обновлений
+                        </div>
                     {% endif %}
                 </div>
             </div>
         {% endfor %}
     {% else %}
         <div class="alert alert-info">
-            Программы не найдены.
+            Программы не найдены
         </div>
     {% endif %}
 </div>
