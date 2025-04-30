@@ -5,6 +5,7 @@ from django.http import HttpResponse, FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.urls import reverse
 
 def home(request):
     """Представление для главной страницы"""
@@ -68,9 +69,8 @@ def check_update(request, program_name, current_version):
                 'update_available': True,
                 'latest_version': latest_update.version,
                 'release_date': latest_update.release_date,
-                'download_url': request.build_absolute_uri(
-                    f'/download/update/{latest_update.id}/'
-                ),
+                # Изменяем URL на страницу обновлений
+                'download_url': request.build_absolute_uri(reverse('software_updates')),
                 'changelog': latest_update.description
             }
             return Response(data)
