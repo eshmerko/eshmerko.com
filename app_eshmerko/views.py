@@ -88,6 +88,10 @@ def download_update(request, update_id):
     if not update.file:
         return HttpResponse("File not found", status=404)
     
+    # Увеличиваем счетчик скачиваний
+    update.download_count += 1
+    update.save(update_fields=['download_count'])  # Оптимизированное сохранение
+    
     response = FileResponse(update.file.open(), filename=update.file.name.split('/')[-1])
     response['Content-Type'] = 'application/octet-stream'
     return response
