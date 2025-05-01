@@ -3,33 +3,528 @@
 {% block title %}Главная - eshmerko.com{% endblock %}
 
 {% block content %}
-<h1>ESHMERKO.COM - Разработка на Python</h1>
-
-<p>Предлагаю профессиональные услуги по разработке телеграм ботов, парсеров данных и программного обеспечения на Python. Помогу вам автоматизировать бизнес-процессы и решить ваши задачи.</p>
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="main-title">
+            <span class="highlight">ESHMERKO.COM</span>
+            <div class="subtitle">
+                <span class="typing-text">Разработка на Python</span>
+                <span class="cursor"></span>
+            </div>
+        </h1>
+        
+        <div class="intro-text">
+            <p>Предлагаю профессиональные услуги по разработке <span class="highlight-text">телеграм ботов</span>, <span class="highlight-text">парсеров данных</span> и <span class="highlight-text">программного обеспечения</span> на Python.</p>
+            <p class="tagline">Помогу вам автоматизировать бизнес-процессы и решить ваши задачи <span class="code-element">{<span class="code-text">быстро</span>, <span class="code-text">качественно</span>, <span class="code-text">надежно</span>}</span></p>
+        </div>
+        
+        <div class="tech-icons">
+            <div class="tech-icon"><i class="fab fa-python"></i> Python</div>
+            <div class="tech-icon"><i class="fab fa-telegram"></i> Telegram</div>
+            <div class="tech-icon"><i class="fas fa-code"></i> API</div>
+            <div class="tech-icon"><i class="fas fa-database"></i> Data</div>
+            <div class="tech-icon"><i class="django-icon"></i>Django</div>
+        </div>
+    </div>
+</div>
 
 <section id="services">
     <h2>Услуги</h2>
 
     <div class="service-card">
-        <h3 class="service-title">Разработка Телеграм Ботов</h3>
-        <p class="service-description">Создаю телеграм ботов любой сложности: от простых информационных ботов до сложных ботов для автоматизации бизнес-процессов, приема заказов, уведомлений и интеграции с другими системами.</p>
-        <p class="service-price">от $50</p>
-        <a class="btn btn-primary" href="#contact">Заказать бота</a>
+        <div class="service-content">
+            <div class="service-info">
+                <h3 class="service-title">Разработка Телеграм Ботов</h3>
+                <p class="service-description">Создаю телеграм ботов любой сложности: от простых информационных ботов до сложных ботов для автоматизации бизнес-процессов, приема заказов, уведомлений и интеграции с другими системами.</p>
+                <a class="btn btn-primary" href="#contact">Заказать бота</a>
+            </div>
+            <div class="price-tag">
+                <div class="price-content">
+                    <span class="price-from">от</span>
+                    <span class="price-value">$50</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="service-card">
-        <h3 class="service-title">Парсинг Данных</h3>
-        <p class="service-description">Разрабатываю парсеры данных для извлечения информации из веб-сайтов. Собираю данные для анализа, мониторинга цен, отслеживания конкурентов и других задач.</p>
-        <p class="service-price">от $50</p>
-        <a class="btn btn-primary" href="#contact">Заказать парсер</a>
+        <div class="service-content">
+            <div class="service-info">
+                <h3 class="service-title">Парсинг Данных</h3>
+                <p class="service-description">Разрабатываю парсеры данных для извлечения информации из веб-сайтов. Собираю данные для анализа, мониторинга цен, отслеживания конкурентов и других задач.</p>
+                <a class="btn btn-primary" href="#contact">Заказать парсер</a>
+            </div>
+            <div class="price-tag">
+                <div class="price-content">
+                    <span class="price-from">от</span>
+                    <span class="price-value">$50</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="service-card">
-        <h3 class="service-title">Разработка ПО</h3>
-        <p class="service-description">Разрабатываю программное обеспечение на Python для решения различных задач. Создаю десктопные приложения, веб-сервисы, автоматизированные системы и другие решения.</p>
-        <p class="service-price">от $300</p>
-        <a class="btn btn-primary" href="#contact">Заказать ПО</a>
+        <div class="service-content">
+            <div class="service-info">
+                <h3 class="service-title">Разработка ПО</h3>
+                <p class="service-description">Разрабатываю программное обеспечение на Python для решения различных задач. Создаю десктопные приложения, веб-сервисы, автоматизированные системы и другие решения.</p>
+                <a class="btn btn-primary" href="#contact">Заказать ПО</a>
+            </div>
+            <div class="price-tag">
+                <div class="price-content">
+                    <span class="price-from">от</span>
+                    <span class="price-value">$300</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-card">
+        <div class="service-content">
+            <div class="service-info">
+                <h3 class="service-title">Разработка сайтов на Django</h3>
+                <p class="service-description">Создаю мощные и безопасные веб-приложения любой сложности на Django. От интернет-магазинов и корпоративных порталов до сложных SaaS-решений. Гарантирую чистую архитектуру, масштабируемость и интеграцию с платежными системами, CRM и аналитическими сервисами. Оптимизированная производительность и защита данных - ключевые преимущества моих решений.</p>
+                <a class="btn btn-primary" href="#contact">Заказать сайт</a>
+            </div>
+            <div class="price-tag">
+                <div class="price-content">
+                    <span class="price-from">от</span>
+                    <span class="price-value">$500</span>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<!-- Модальное окно -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Оформление заказа</h3>
+        <form id="orderForm">
+            <input type="hidden" id="serviceType" name="service_type">
+            <div class="form-group">
+                <input type="text" id="name" name="name" placeholder="Ваше имя" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="phone" name="phone" placeholder="Ваш телефон" required>
+            </div>
+            <div class="form-group">
+                <textarea id="message" name="message" placeholder="Дополнительные детали"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+        </form>
+    </div>
+</div>
+
+<style>
+     /* Стили модального окна */
+     .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+    /* Стили для карточек услуг */
+    .service-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+    
+    .service-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .service-info {
+        flex: 1;
+        padding-right: 20px;
+    }
+    
+    .service-title {
+        color: #343a40;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    
+    .service-description {
+        color: #6c757d;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    /* Стилизованная карточка цены */
+    .price-tag {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        min-width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .price-tag:before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+    }
+    
+    .price-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+    }
+    
+    .price-from {
+        font-size: 16px;
+        opacity: 0.8;
+        margin-bottom: -5px;
+    }
+    
+    .price-value {
+        font-size: 32px;
+        font-weight: 700;
+    }
+    
+    .btn-primary {
+        background-color: #0069d9;
+        border-color: #0062cc;
+        padding: 8px 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+        transform: translateY(-2px);
+    }
+    
+    /* Стили для hero-section */
+    .hero-section {
+        background: linear-gradient(to bottom right, #212529, #343a40);
+        padding: 50px 20px;
+        border-radius: 8px;
+        margin-bottom: 40px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 300px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%233498db' fill-opacity='0.1' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'/%3E%3C/svg%3E");
+        opacity: 0.1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .main-title {
+        margin-bottom: 25px;
+        line-height: 1.2;
+    }
+    
+    .highlight {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin-top: 5px;
+        font-weight: 400;
+        color: #f8f9fa;
+    }
+    
+    .typing-text {
+        border-right: 2px solid transparent;
+    }
+    
+    .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 24px;
+        background-color: #2ecc71;
+        margin-left: 2px;
+        animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    .intro-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        max-width: 700px;
+    }
+    
+    .highlight-text {
+        color: #2ecc71;
+        font-weight: 600;
+    }
+    
+    .tagline {
+        font-style: italic;
+        opacity: 0.9;
+    }
+    
+    .code-element {
+        font-family: 'Courier New', monospace;
+        background-color: rgba(46, 204, 113, 0.15);
+        padding: 3px 8px;
+        border-radius: 4px;
+        margin-left: 5px;
+    }
+    
+    .code-text {
+        color: #2ecc71;
+    }
+    
+    .tech-icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    
+    .tech-icon {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .tech-icon:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .tech-icon i {
+        color: #2ecc71;
+    }
+    
+    #services h2 {
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+        font-weight: 600;
+    }
+    
+    #services h2:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+    }
+     /* Добавляем новый стиль для иконки Django */
+     .tech-icon .django-icon {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M14.13 4.53h3.622v22.94H14.13zm8.582 2.512h-3.463L16.51 16.6l-2.79-9.56H9.678L8.36 13.87l-1.02-5.156H3.842l2.18 11.84 2.34 8.156h3.463l3.463-11.84 3.463 11.84h3.463l2.34-8.156 2.18-11.84h-3.497l-1.02 5.156-1.326-7.357zm-8.582.973l1.734 6.226 1.734-6.226h-3.468zm1.734 16.44l-1.734-5.82-1.734 5.82h3.468zm7.357 2.34H24.4l-2.18-6.226-1.326 3.81-1.02-5.82-1.02 3.463-1.326-5.156-1.326 5.156-1.02-3.463-1.02 5.82-1.326-3.81-2.18 6.226h3.497l1.326-3.81 1.326 3.81h2.04l1.326-3.81 1.326 3.81z' fill='%232ecc71'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        margin-right: 8px;
+    }
+
+    /* Обновляем существующий стиль для выравнивания */
+    .tech-icon i {
+        color: #2ecc71;
+        min-width: 16px; /* Добавляем для правильного выравнивания */
+    }
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 768px) {
+        .service-content {
+            flex-direction: column;
+        }
+        
+        .service-info {
+            padding-right: 0;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .price-tag {
+            width: 100%;
+            height: 80px;
+            margin-top: 15px;
+        }
+        
+        .highlight {
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .tech-icons {
+            justify-content: center;
+        }
+    }
+</style>
+
+<!-- Подключение Font Awesome для иконок -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Скрипт для анимации печатающегося текста -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Анимация для эффекта печатания
+        const text = "Разработка на Python";
+        const typingElement = document.querySelector('.typing-text');
+        const cursor = document.querySelector('.cursor');
+        
+        typingElement.textContent = "";
+        
+        let i = 0;
+        const typingInterval = setInterval(() => {
+            if (i < text.length) {
+                typingElement.textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(typingInterval);
+            }
+        }, 100);
+    });
+</script>
+<script>
+    // Обработчики модального окна
+    document.querySelectorAll('[href="#contact"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const serviceName = btn.closest('.service-info').querySelector('.service-title').textContent;
+            document.getElementById('serviceType').value = serviceName;
+            document.getElementById('modal').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('.close-btn').addEventListener('click', () => {
+        document.getElementById('modal').style.display = 'none';
+    });
+
+    // Отправка формы в Telegram
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            service: document.getElementById('serviceType').value,
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            message: document.getElementById('message').value
+        };
+
+        const telegramMessage = `
+            📌 Новая заявка:
+            Услуга: ${formData.service}
+            Имя: ${formData.name}
+            Телефон: ${formData.phone}
+            Сообщение: ${formData.message || 'Нет сообщения'}
+        `;
+
+        try {
+            await fetch(`https://api.telegram.org/bot5876243681:AAGajxM9drvH8c8w5PcB2xRdPMs36ZdBMR0/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: '314485159',
+                    text: telegramMessage
+                })
+            });
+
+            alert('Заявка успешно отправлена!');
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('orderForm').reset();
+        } catch (error) {
+            alert('Ошибка отправки. Попробуйте ещё раз.');
+        }
+    });
+</script>
 
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="article-content">
+        {{ article.content|safe }}  <!-- Обязательно используйте фильтр safe -->
+    </div>
+
+    <!-- Подключение кастомных стилей -->
+    <link rel="stylesheet" href="{% static 'css/article_styles.css' %}">
+{% endblock %}

@@ -1,11 +1,13 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Program, Update
+from .models import Program, Update, Article
 from django.http import HttpResponse, FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.urls import reverse
+from django.views.generic import ListView, DetailView
+from django.contrib.syndication.views import Feed
 
 def home(request):
     """Представление для главной страницы"""
@@ -95,3 +97,44 @@ def download_update(request, update_id):
     response = FileResponse(update.file.open(), filename=update.file.name.split('/')[-1])
     response['Content-Type'] = 'application/octet-stream'
     return response
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'blog/blog_list.html'
+    context_object_name = 'articles'
+    paginate_by = 10
+    queryset = Article.objects.filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['meta'] = {
+            'title': 'Блог - Полезные статьи о разработке ПО',
+            'description': 'Экспертные статьи и руководства по разработке программного обеспечения',
+            'keywords': 'программирование, разработка ПО, IT статьи'
+        }
+        return context
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'blog/blog_detail.html'
+    context_object_name = 'article'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.views += 1
+        obj.save(update_fields=['views'])
+        return obj
+
+class LatestArticlesFeed(Feed):
+    title = "Последние статьи"
+    description = "Новые публикации в блоге"
+    link = "/blog/"
+
+    def items(self):
+        return Article.objects.filter(is_published=True).order_by('-published_date')[:10]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.meta_description

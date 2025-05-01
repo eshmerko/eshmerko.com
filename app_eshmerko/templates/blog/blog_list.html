@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% endblock %}
+
+{% block content %}
+<div class="reading-progress" id="readingProgress"></div>
+
+<article class="blog-article">
+    <div class="article-code-line">#articles_list.py</div>
+    
+    <header class="article-title">
+        <h1>Полезные статьи</h1>
+        <div class="article-meta">
+            <span class="date">Всего материалов: {{ articles|length }}</span>
+        </div>
+    </header>
+
+    <div class="article-content">
+        <div class="function-cards">
+            {% for article in articles %}
+            <div class="function-card article-card">
+                <div class="article-meta">
+                    <span class="date">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ article.published_date|date:"d E Y" }}
+                    </span>
+                    <span class="views-count">
+                        <i class="fas fa-eye"></i> {{ article.views }}
+                    </span>
+                </div>
+                
+                <h3>
+                    <a href="{{ article.get_absolute_url }}" class="article-link">
+                        {{ article.title }}
+                    </a>
+                </h3>
+                
+                <div class="article-excerpt-list">
+                    {{ article.meta_description }}
+                </div>
+                
+                <a href="{{ article.get_absolute_url }}" class="read-more">
+                    Читать далее →
+                    <span class="article-code-line">→</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="article-pagination">
+            {% include 'includes/pagination.html' %}
+        </div>
+    </div>
+</article>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Анимация прогресс-бара
+    window.addEventListener('scroll', () => {
+        const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        document.getElementById('readingProgress').style.width = `${progress}%`;
+    });
+</script>
+{% endblock %}

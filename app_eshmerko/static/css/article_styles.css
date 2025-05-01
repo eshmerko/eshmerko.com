@@ -1,0 +1,845 @@
+/* Основные стили для блога */
+/* Тема: технологическая в стиле кода */
+
+/* Общие стили для статей */
+.blog-article {
+    background-color: #121212;
+    border-radius: 8px;
+    border: 1px solid #2d2d2d;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.blog-article::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #2ecc71, #3498db);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.blog-article:hover::before {
+    opacity: 1;
+}
+
+/* Декоративные элементы кода */
+.article-code-line {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #2ecc71;
+    opacity: 0.5;
+}
+
+/* Заголовок статьи */
+.article-title {
+    padding: 20px;
+    position: relative;
+    border-bottom: 1px solid #333;
+}
+
+.article-title h2 {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.article-title h2::before {
+    content: "# ";
+    color: #2ecc71;
+}
+
+/* Метаданные статьи */
+.article-meta {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    font-family: 'Courier New', monospace;
+}
+
+.article-meta .author::before {
+    content: "@";
+    color: #3498db;
+}
+
+.article-meta .date::before {
+    content: "// ";
+    color: #2ecc71;
+}
+
+.article-meta .category {
+    background-color: #1a1a1a;
+    border: 1px solid #2ecc71;
+    border-radius: 3px;
+    color: #2ecc71;
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 10px;
+    padding: 2px 8px;
+}
+
+/* Блок списка статей */
+.article-excerpt-list {
+    color: #171717;
+}
+.article-link-list h3 {
+    color: #171717;
+}
+/* Основное содержимое статьи */
+.article-content {
+    padding: 25px;
+    color: #e6e6e6;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.article-content p {
+    margin-bottom: 20px;
+}
+
+.article-content a {
+    color: #3498db;
+    text-decoration: none;
+    border-bottom: 1px dashed #3498db;
+    transition: all 0.2s ease;
+}
+
+.article-content a:hover {
+    color: #2ecc71;
+    border-bottom: 1px solid #2ecc71;
+}
+
+/* Изображения в статье */
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 15px 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+}
+
+.article-image-container {
+    position: relative;
+    margin: 25px 0;
+}
+
+.article-image-container::before {
+    content: "# image";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: #121212;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    padding: 0 5px;
+    z-index: 1;
+}
+
+/* Блоки кода в статье */
+.code-block {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    border-left: 3px solid #2ecc71;
+    font-family: 'Courier New', monospace;
+    padding: 15px;
+    margin: 20px 0;
+    overflow-x: auto;
+    position: relative;
+}
+
+.code-block::before {
+    content: "def python():";
+    color: #3498db;
+    font-size: 0.7rem;
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    background-color: #121212;
+    padding: 0 5px;
+}
+
+.code-block code {
+    color: #f8f8f2;
+    display: block;
+    line-height: 1.5;
+}
+
+/* Подсветка синтаксиса */
+.code-keyword { color: #ff79c6; }
+.code-function { color: #50fa7b; }
+.code-string { color: #f1fa8c; }
+.code-comment { color: #6272a4; }
+.code-number { color: #bd93f9; }
+
+/* Цитаты */
+blockquote {
+    border-left: 3px solid #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+    padding: 15px;
+    margin: 20px 0;
+    font-style: italic;
+    position: relative;
+}
+
+blockquote::before {
+    content: ">> ";
+    color: #3498db;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Заголовки в статье */
+.article-content h3 {
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    margin: 30px 0 15px;
+    position: relative;
+    padding-left: 30px;
+}
+
+.article-content h3::before {
+    content: "## ";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+}
+
+.article-content h4 {
+    color: #3498db;
+    font-family: 'Courier New', monospace;
+    font-size: 1.3rem;
+    margin: 25px 0 12px;
+    position: relative;
+    padding-left: 40px;
+}
+
+.article-content h4::before {
+    content: "### ";
+    color: #2ecc71;
+    position: absolute;
+    left: 0;
+}
+
+/* Списки */
+.article-content ul, .article-content ol {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.article-content ul li, .article-content ol li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.article-content ul li::before {
+    content: "→ ";
+    color: #2ecc71;
+    position: absolute;
+    left: -15px;
+    font-family: 'Courier New', monospace;
+}
+
+.article-content ol {
+    counter-reset: list-counter;
+}
+
+.article-content ol li {
+    counter-increment: list-counter;
+}
+
+.article-content ol li::before {
+    content: counter(list-counter) ". ";
+    color: #3498db;
+    position: absolute;
+    left: -20px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Разделители */
+.article-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(46, 204, 113, 0), rgba(46, 204, 113, 0.5), rgba(46, 204, 113, 0));
+    margin: 30px 0;
+    position: relative;
+}
+
+.article-divider::before {
+    content: "// -----";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #121212;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    padding: 0 10px;
+}
+
+/* Нижняя часть статьи */
+.article-footer {
+    background-color: #1a1a1a;
+    margin-top: 15px;
+    padding: 20px;
+    border-top: 1px solid #333;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.article-tag {
+    background-color: #121212;
+    border: 1px solid #2ecc71;
+    border-radius: 3px;
+    color: #2ecc71;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    transition: all 0.2s ease;
+}
+
+.article-tag:hover {
+    background-color: #2ecc71;
+    color: #121212;
+}
+
+.article-tag::before {
+    content: "#";
+    margin-right: 2px;
+}
+
+.article-share {
+    display: flex;
+    gap: 10px;
+}
+
+.share-button {
+    background-color: #121212;
+    border: 1px solid #3498db;
+    border-radius: 3px;
+    color: #3498db;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.share-button:hover {
+    background-color: #3498db;
+    color: #121212;
+}
+
+.share-button svg {
+    height: 14px;
+    width: 14px;
+    margin-right: 5px;
+}
+
+/* Секция комментариев */
+.comments-section {
+    margin-top: 40px;
+    background-color: #121212;
+    border-radius: 8px;
+    border: 1px solid #2d2d2d;
+    padding: 20px;
+    position: relative;
+}
+
+.comments-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    opacity: 0.7;
+}
+
+.comments-title {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+    position: relative;
+}
+
+.comments-title::before {
+    content: "# ";
+    color: #3498db;
+}
+
+/* Форма комментария */
+.comment-form {
+    margin-bottom: 30px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    color: #e6e6e6;
+    font-family: inherit;
+    padding: 15px;
+    margin-bottom: 15px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.comment-form-footer {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"] {
+    flex: 1;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    color: #e6e6e6;
+    font-family: inherit;
+    padding: 10px 15px;
+    transition: border-color 0.3s ease;
+}
+
+.comment-form input[type="text"]:focus,
+.comment-form input[type="email"]:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.comment-submit {
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 5px;
+    color: #121212;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.comment-submit:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+/* Комментарии */
+.comment {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 15px;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2d2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    border: 1px solid #3498db;
+}
+
+.comment-avatar::before {
+    content: "@";
+    color: #3498db;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.comment-info {
+    flex: 1;
+}
+
+.comment-author {
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.comment-date {
+    color: #888;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+}
+
+.comment-content {
+    color: #e6e6e6;
+    line-height: 1.5;
+}
+
+.comment-reply {
+    margin-top: 10px;
+    cursor: pointer;
+    color: #3498db;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+    display: inline-block;
+}
+
+.comment-reply:hover {
+    text-decoration: underline;
+}
+
+/* Вложенные комментарии */
+.comment-replies {
+    margin-left: 40px;
+    margin-top: 15px;
+    padding-left: 15px;
+    border-left: 2px solid #333;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .article-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .article-share {
+        margin-top: 15px;
+    }
+    
+    .comment-form-footer {
+        flex-direction: column;
+    }
+    
+    .article-content h3, .article-content h4 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Анимации для декоративных элементов */
+@keyframes blink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.article-code-line {
+    animation: blink 4s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.code-block:hover::before {
+    animation: pulse 2s infinite;
+}
+
+/* Стили для связанных статей */
+.related-articles {
+    margin-top: 40px;
+}
+
+.related-title {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.related-title::before {
+    content: "# ";
+    color: #2ecc71;
+    position: absolute;
+    left: 0;
+}
+
+.related-articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.related-article-card {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #333;
+}
+
+.related-article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.related-article-image {
+    height: 150px;
+    width: 100%;
+    background-color: #2d2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.related-article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-article-content {
+    padding: 15px;
+}
+
+.related-article-title {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    font-family: 'Courier New', monospace;
+}
+
+.related-article-date {
+    color: #888;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+}
+
+.related-article-category {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(18, 18, 18, 0.7);
+    color: #2ecc71;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Стили для оглавления статьи */
+.article-toc {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #333;
+    position: relative;
+}
+
+.article-toc::before {
+    content: "// Содержание";
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background-color: #121212;
+    padding: 0 10px;
+}
+
+.article-toc ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.article-toc li {
+    margin-bottom: 5px;
+}
+
+.article-toc a {
+    color: #e6e6e6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+    padding: 5px 0;
+    padding-left: 15px;
+    position: relative;
+    font-family: 'Courier New', monospace;
+}
+
+.article-toc a::before {
+    content: "→";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateX(-5px);
+}
+
+.article-toc a:hover {
+    color: #3498db;
+}
+
+.article-toc a:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.article-toc .toc-h3 {
+    padding-left: 25px;
+    font-size: 0.9rem;
+}
+
+.article-toc .toc-h4 {
+    padding-left: 40px;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* Стили для иконок в статье */
+.article-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    fill: #2ecc71;
+}
+
+/* Стили для подписи к рисункам */
+.figure-caption {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Декоративные элементы для начала и конца статьи */
+.article-beginning, .article-ending {
+    text-align: center;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    color: #2ecc71;
+    font-size: 0.9rem;
+}
+
+.article-beginning::before, .article-ending::before {
+    content: "/* ";
+}
+
+.article-beginning::after, .article-ending::after {
+    content: " */";
+}
+
+/* Кнопка "Наверх" */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: #1a1a1a;
+    border: 2px solid #2ecc71;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: #2ecc71;
+}
+
+.back-to-top:hover svg {
+    fill: #121212;
+}
+
+.back-to-top svg {
+    width: 24px;
+    height: 24px;
+    fill: #2ecc71;
+    transition: fill 0.3s ease;
+}
+
+/* Индикатор прогресса чтения */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2ecc71, #3498db);
+    z-index: 1000;
+    transition: width 0.05s ease;
+}
+
+/* Мерцающий курсор в заголовке */
+.article-title h2::after {
+    content: "|";
+    color: #3498db;
+    animation: cursor-blink 1s infinite;
+    margin-left: 5px;
+}
+
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

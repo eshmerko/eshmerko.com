@@ -1,9 +1,48 @@
 # models.py
 from django.db import models
+from ckeditor.fields import RichTextField
+from django.urls import reverse
+from django.utils.text import slugify
+from django.utils import timezone
+
+class Article(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
+    slug = models.SlugField(max_length=255, unique=True, verbose_name="URL")
+    meta_description = models.TextField(verbose_name="Мета-описание")
+    content = RichTextField()
+    published_date = models.DateTimeField(
+        auto_now_add=True, 
+        verbose_name="Дата публикации",
+        editable=False  # Добавляем это свойство
+    )
+    is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
+    keywords = models.CharField(max_length=255, blank=True, verbose_name="Ключевые слова")
+
+    class Meta:
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
+        ordering = ['-published_date']
+
+    def save(self, *args, **kwargs):
+        if not self.id:  # Только при создании новой статьи
+            self.published_date = timezone.now()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('article_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 class Program(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = RichTextField()
     download_file = models.FileField(upload_to='programs/', null=True, blank=True)
     download_count = models.IntegerField(default=0)
 

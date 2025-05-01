@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5_h9zym3^jb1j4jixg^r3x^coorjom!k^@6x6g3wlkb3)#q%om'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = True
+DEBUG = False
+# DEBUG = True
 
-# ALLOWED_HOSTS = ['eshmerko.com', 'http://eshmerko.com', 'https://eshmerko.com', 'www.eshmerko.com']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['eshmerko.com', 'http://eshmerko.com', 'https://eshmerko.com', 'www.eshmerko.com']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_eshmerko',
     'rest_framework',
-    'ckeditor',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -135,22 +135,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Full',
-        'height': 400,
-        'width': '100%',
-        'extraPlugins': ','.join([
-            'codesnippet',  # Подсветка кода
-            'uploadimage',  # Загрузка изображений
-        ]),
-        'removePlugins': 'exportpdf',  # Отключаем ненужные плагины
-        'codeSnippet_theme': 'monokai',  # Тема для подсветки кода
-    },
-}
-
-# Для загрузки изображений
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
