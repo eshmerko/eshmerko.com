@@ -9,43 +9,892 @@ body {
     padding: 20px;
 }
 
+/* Стили для карточек услуг */
 .service-card {
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
     padding: 20px;
-    background-color: #fff;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .service-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    color: #343a40;
+    margin-bottom: 15px;
 }
 
 .service-description {
+    color: #6c757d;
     margin-bottom: 15px;
 }
 
 .service-price {
-    font-size: 18px;
     font-weight: bold;
     color: #28a745;
+    margin-bottom: 15px;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+
+/* Основные стили для навигационной панели */
+.navbar-tech {
+background: linear-gradient(to right, #0a0c0e, #1a1c1e);
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+padding: 12px 0;
+position: relative;
+z-index: 1000;
+overflow: visible; /* Изменено с overflow: hidden чтобы выпадающее меню было видимым */
 }
 
-.btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
+.navbar-tech:before {
+content: "";
+position: absolute;
+top: 0;
+right: 0;
+width: 100%;
+height: 100%;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%233498db' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'/%3E%3C/svg%3E");
+opacity: 0.1;
+z-index: 0;
 }
 
-footer {
+/* Стили для контейнера логотипа */
+.logo-container {
+position: relative;
+overflow: visible;
+}
+
+/* Анимация логотипа */
+.main-logo {
+position: relative;
+z-index: 2;
+}
+
+.logo-bg {
+stroke: #2ecc71;
+stroke-width: 1;
+stroke-dasharray: 780;
+stroke-dashoffset: 780;
+animation: draw-logo-border 4s linear forwards, glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes draw-logo-border {
+to {
+    stroke-dashoffset: 0;
+}
+}
+
+@keyframes glow {
+from {
+    stroke: #2ecc71;
+    stroke-opacity: 0.3;
+}
+to {
+    stroke: #3498db;
+    stroke-opacity: 0.6;
+}
+}
+
+/* Анимация пульсации для точек в логотипе */
+.pulse-element {
+animation: pulse 3s ease-in-out infinite;
+}
+
+.delay-1 {
+animation-delay: 0.5s;
+}
+
+.delay-2 {
+animation-delay: 1s;
+}
+
+.delay-3 {
+animation-delay: 1.5s;
+}
+
+@keyframes pulse {
+0% {
+    opacity: 0.2;
+    r: 5;
+}
+50% {
+    opacity: 0.5;
+    r: 6;
+}
+100% {
+    opacity: 0.2;
+    r: 5;
+}
+}
+
+/* Анимация для линий кода в логотипе */
+.code-line {
+animation: flicker 5s linear infinite;
+}
+
+.line-1 {
+animation-delay: 0s;
+}
+
+.line-2 {
+animation-delay: 1s;
+}
+
+.line-3 {
+animation-delay: 2s;
+}
+
+.line-4 {
+animation-delay: 3s;
+}
+
+.line-5 {
+animation-delay: 4s;
+}
+
+@keyframes flicker {
+0%, 100% {
+    opacity: 0.2;
+}
+50% {
+    opacity: 0.4;
+}
+}
+
+/* Анимация мерцания для скобок */
+.bracket {
+animation: flicker-brackets 3s ease-in-out infinite;
+}
+
+.bracket-right {
+animation-delay: 1.5s;
+}
+
+@keyframes flicker-brackets {
+0%, 100% {
+    opacity: 0.9;
+}
+50% {
+    opacity: 0.5;
+}
+}
+
+/* Эффект свечения для текста логотипа */
+.logo-text {
+animation: text-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes text-glow {
+from {
+    text-shadow: 0 0 2px rgba(255,255,255,0.5);
+}
+to {
+    text-shadow: 0 0 6px rgba(255,255,255,0.8), 0 0 10px rgba(46, 204, 113, 0.5);
+}
+}
+
+/* Стиль и анимация для подзаголовка */
+.subtitle {
+opacity: 0.8;
+animation: subtitle-blink 8s infinite;
+}
+
+@keyframes subtitle-blink {
+0%, 100% {
+    opacity: 0.8;
+}
+50% {
+    opacity: 0.4;
+}
+}
+
+/* Бинарный код под логотипом */
+.binary-code {
+position: absolute;
+bottom: -12px;
+left: 0;
+width: 100%;
+text-align: center;
+font-family: 'Courier New', monospace;
+font-size: 8px;
+color: #3498db;
+opacity: 0.5;
+letter-spacing: 1px;
+z-index: 1;
+}
+
+/* Стилизация гамбургер-меню */
+.custom-toggler {
+border: none;
+background: transparent;
+padding: 8px;
+outline: none !important;
+position: relative;
+}
+
+.toggler-icon {
+position: relative;
+width: 30px;
+height: 30px;
+padding: 5px;
+border-radius: 4px;
+background: rgba(52, 152, 219, 0.1);
+border: 1px solid rgba(46, 204, 113, 0.2);
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+transform: rotate(0deg);
+transition: transform 0.3s ease;
+}
+
+.navbar-toggler:hover .toggler-icon {
+transform: rotate(90deg);
+}
+
+.toggler-line {
+display: block;
+width: 100%;
+height: 2px;
+background: linear-gradient(to right, #3498db, #2ecc71);
+border-radius: 2px;
+opacity: 0.8;
+transition: transform 0.3s ease;
+}
+
+.toggler-dots {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+display: flex;
+justify-content: center;
+align-items: center;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.toggler-dot {
+width: 4px;
+height: 4px;
+background-color: #2ecc71;
+border-radius: 50%;
+margin: 0 2px;
+}
+
+.navbar-toggler:hover .toggler-dots {
+opacity: 1;
+}
+
+.navbar-toggler:hover .toggler-line {
+transform: scale(0.8);
+}
+
+/* Стили для навигационных ссылок */
+.navbar-tech .nav-link {
+color: #f8f9fa;
+transition: color 0.3s ease, transform 0.2s ease;
+position: relative;
+padding: 8px 15px;
+margin: 0 5px;
+display: flex;
+align-items: center;
+overflow: hidden;
+}
+
+.navbar-tech .nav-link:hover {
+color: #2ecc71;
+transform: translateY(-2px);
+}
+
+.nav-icon {
+margin-right: 8px;
+opacity: 0.8;
+transition: transform 0.3s ease;
+}
+
+.nav-text {
+position: relative;
+}
+
+.nav-bracket {
+opacity: 0;
+margin-left: 3px;
+color: #3498db;
+transform: translateX(-10px);
+transition: all 0.3s ease;
+}
+
+.navbar-tech .nav-link:hover .nav-icon {
+transform: rotate(10deg);
+}
+
+.navbar-tech .nav-link:hover .nav-bracket {
+opacity: 1;
+transform: translateX(0);
+}
+
+.navbar-tech .nav-link:after {
+content: '';
+position: absolute;
+width: 100%;
+height: 2px;
+bottom: 0;
+left: 0;
+background: linear-gradient(to right, #3498db, #2ecc71);
+transform: scaleX(0);
+transform-origin: right;
+transition: transform 0.3s ease;
+}
+
+.navbar-tech .nav-link:hover:after {
+transform: scaleX(1);
+transform-origin: left;
+}
+
+/* Эффект терминала в конце меню */
+.terminal-item {
+display: flex;
+align-items: center;
+padding: 8px 15px;
+color: #2ecc71;
+font-family: 'Courier New', monospace;
+margin-left: 15px;
+}
+
+.terminal-prompt {
+margin-right: 5px;
+}
+
+.terminal-cursor {
+width: 10px;
+height: 18px;
+background-color: #2ecc71;
+display: inline-block;
+animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+0%, 100% {
+    opacity: 1;
+}
+50% {
+    opacity: 0;
+}
+}
+
+/* Декоративный элемент внизу навбара */
+.navbar-decoration {
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 4px;
+overflow: hidden;
+}
+
+.nav-dot {
+animation: dot-move 8s ease-in-out infinite;
+}
+
+.nav-dot-1 {
+animation-delay: 0s;
+}
+
+.nav-dot-2 {
+animation-delay: 4s;
+}
+
+.nav-dot-3 {
+animation-delay: 2s;
+}
+
+@keyframes dot-move {
+0%, 100% {
+    opacity: 0.8;
+    r: 2;
+}
+50% {
+    opacity: 0.3;
+    r: 1;
+}
+}
+
+/* Адаптивные стили для мобильного меню */
+@media (max-width: 991.98px) {
+.navbar-collapse {
+    position: absolute;
+    top: 80px;
+    right: 15px;
+    width: 80%;
+    max-width: 300px;
+    background: rgba(10, 12, 14, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3), 0 0 0 1px rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.navbar-collapse.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.navbar-nav {
+    flex-direction: column;
+    width: 100%;
+}
+
+.nav-item {
+    margin: 5px 0;
+    border-bottom: 1px solid rgba(46, 204, 113, 0.1);
+}
+
+.nav-item:last-child {
+    border-bottom: none;
+}
+
+.nav-link {
+    padding: 12px 15px;
+    display: flex;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+/* Скрываем терминальное окно на мобильных */
+.terminal-item {
+    display: none;
+}
+}
+
+/* Добавляем стили для активной страницы */
+.navbar-tech .nav-link.active {
+color: #2ecc71;
+}
+
+.navbar-tech .nav-link.active:after {
+transform: scaleX(1);
+}
+
+.navbar-tech .nav-link.active .nav-bracket {
+opacity: 1;
+transform: translateX(0);
+}
+/* Стили для обновленного футера */
+.footer-section {
+background: linear-gradient(to right, #0a0c0e, #1a1c1e);
+padding: 40px 0 20px;
+border-top: 2px solid rgba(46, 204, 113, 0.2);
+position: relative;
+overflow: hidden;
+color: #f8f9fa;
+box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+margin-top: 50px;
+}
+
+.footer-section:before {
+content: "";
+position: absolute;
+top: 0;
+right: 0;
+width: 100%;
+height: 100%;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%233498db' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'/%3E%3C/svg%3E");
+opacity: 0.1;
+z-index: 0;
+}
+
+.footer-block {
+background: rgba(26, 28, 30, 0.5);
+border-radius: 8px;
+padding: 25px;
+margin-bottom: 20px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2), 
+        0 1px 3px rgba(0,0,0,0.3);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+position: relative;
+z-index: 1;
+overflow: hidden;
+border-top: 3px solid #3498db;
+backdrop-filter: blur(5px);
+border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.footer-block:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 15px rgba(0,0,0,0.3), 
+        0 3px 6px rgba(0,0,0,0.2);
+}
+
+.footer-block:before {
+content: "";
+position: absolute;
+top: 0;
+right: 0;
+width: 60px;
+height: 60px;
+background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(52, 152, 219, 0.1) 100%);
+border-radius: 0 0 0 60px;
+z-index: -1;
+}
+
+.footer-block:after {
+content: "";
+position: absolute;
+bottom: 0;
+left: 0;
+width: 40px;
+height: 40px;
+background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(46, 204, 113, 0.05) 100%);
+border-radius: 0 40px 0 0;
+z-index: -1;
+}
+
+.footer-block h3 {
+color: #f8f9fa;
+font-size: 1.25rem;
+margin-bottom: 15px;
+padding-bottom: 10px;
+border-bottom: 2px solid #3498db;
+position: relative;
+display: flex;
+align-items: center;
+}
+
+.code-tag {
+font-family: 'Courier New', monospace;
+color: #2ecc71;
+font-weight: bold;
+}
+
+.footer-links {
+list-style: none;
+padding-left: 0;
+}
+
+.footer-links li {
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+transition: transform 0.2s ease;
+}
+
+.footer-links li:hover {
+transform: translateX(5px);
+}
+
+.footer-icon {
+margin-right: 10px;
+flex-shrink: 0;
+}
+
+.footer-links a {
+color: #f8f9fa;
+text-decoration: none;
+transition: color 0.3s ease;
+position: relative;
+padding-bottom: 2px;
+}
+
+.footer-links a:hover {
+color: #3498db;
+}
+
+.footer-links a:after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: 0;
+left: 0;
+background-color: #2ecc71;
+transition: width 0.3s ease;
+}
+
+.footer-links a:hover:after {
+width: 100%;
+}
+
+.contact-info {
+margin-bottom: 15px;
+}
+
+.contact-item {
+display: flex;
+align-items: center;
+margin-bottom: 12px;
+transition: transform 0.2s ease;
+}
+
+.contact-item:hover {
+transform: translateX(5px);
+}
+
+.contact-info a {
+color: #f8f9fa;
+text-decoration: none;
+transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+color: #3498db;
+}
+
+.copyright {
+text-align: center;
+padding: 20px;
+margin-top: 30px;
+border-radius: 8px;
+background: rgba(10, 12, 14, 0.7);
+box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+color: #adb5bd;
+position: relative;
+z-index: 1;
+overflow: hidden;
+border: 1px solid rgba(46, 204, 113, 0.1);
+}
+
+.copyright:before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 3px;
+background: linear-gradient(to right, #3498db, #2ecc71);
+}
+
+.copyright-content {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.copyright-logo {
+margin-right: 8px;
+}
+
+.code-decoration {
+margin-top: 15px;
+font-family: 'Courier New', monospace;
+color: #6c757d;
+font-size: 0.85rem;
+opacity: 0.7;
+}
+
+.code-line {
+display: block;
+padding-left: 15px;
+position: relative;
+}
+
+.code-line:before {
+content: "";
+position: absolute;
+left: 0;
+top: 50%;
+width: 10px;
+height: 1px;
+background-color: #6c757d;
+}
+
+.code-decoration-bottom {
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 15px;
+font-family: 'Courier New', monospace;
+}
+
+.code-bracket {
+color: #2ecc71;
+font-size: 1.5rem;
+font-weight: bold;
+}
+
+.code-text {
+color: #6c757d;
+margin: 0 10px;
+font-size: 0.85rem;
+}
+
+.code-line-header, .matrix-decoration {
+margin: 15px 0;
+width: 100%;
+opacity: 0.7;
+position: relative;
+z-index: 1;
+}
+
+/* Добавляем анимацию линий кода в футере */
+.footer-code-line {
+animation: footer-flicker 5s linear infinite;
+}
+
+.footer-line-1 {
+animation-delay: 0s;
+}
+
+.footer-line-2 {
+animation-delay: 1s;
+}
+
+.footer-line-3 {
+animation-delay: 2s;
+}
+
+@keyframes footer-flicker {
+0%, 100% {
+opacity: 0.2;
+}
+50% {
+opacity: 0.5;
+}
+}
+
+/* Добавляем анимацию для точек в декорациях футера */
+.footer-dot {
+animation: footer-pulse 4s ease-in-out infinite;
+}
+
+.footer-dot-1 {
+animation-delay: 0s;
+}
+
+.footer-dot-2 {
+animation-delay: 2s;
+}
+
+@keyframes footer-pulse {
+0%, 100% {
+opacity: 0.5;
+r: 3;
+}
+50% {
+opacity: 0.8;
+r: 4;
+}
+}
+
+/* Декорация с бинарным кодом */
+.footer-binary {
+font-family: 'Courier New', monospace;
+color: rgba(46, 204, 113, 0.4);
+font-size: 0.7rem;
+text-align: center;
+margin-top: 10px;
+letter-spacing: 2px;
+}
+/* Blog Styles */
+.blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.article-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.article-card h2 {
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.article-meta {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.read-more {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.article-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.article-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+.tags {
+    margin-top: 2rem;
+}
+
+.tag {
+    display: inline-block;
+    background: #f0f2f5;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Pagination Styles */
+.pagination {
+    margin: 2rem 0;
     text-align: center;
-    padding: 20px;
-    background-color: #343a40;
+}
+
+.pagination-list {
+    display: inline-flex;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-item {
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.pagination-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    color: #3498db;
+    text-decoration: none;
+    border: 1px solid #dee2e6;
+}
+
+.pagination-item.active .pagination-link {
+    background: #3498db;
     color: white;
+    border-color: #3498db;
+}
+
+.pagination-link:hover {
+    background: #e9ecef;
+}
+
+.pagination-item.active .pagination-link:hover {
+    background: #2980b9;
 }

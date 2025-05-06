@@ -1,0 +1,59 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /static/admin/
+Disallow: /media/private/
+Disallow: /cgi-bin/
+Disallow: /search/
+Disallow: /*?q=*
+Disallow: /*?page=*
+Disallow: /*?filter=*
+Disallow: /*?order=*
+Disallow: /*?sort=*
+Disallow: /accounts/
+Disallow: /api/
+Disallow: /*/print/
+Disallow: /*?*
+
+# Разрешить доступ к CSS и JS файлам
+Allow: /static/
+Allow: /media/
+Allow: /*.css$
+Allow: /*.js$
+
+# Запретить дублирование контента
+Disallow: /*?*utm*=
+Disallow: /*&*utm*=
+Disallow: /*?*ref*=
+Disallow: /*&*ref*=
+Disallow: /*?*fbclid*=
+Disallow: /*&*fbclid*=
+
+# Временная задержка для всех роботов
+Crawl-delay: 10
+
+# Индексирование для Yandex
+User-agent: Yandex
+Disallow: /admin/
+Disallow: /static/admin/
+Disallow: /media/private/
+Disallow: /cgi-bin/
+Disallow: /search/
+Disallow: /*?q=*
+Disallow: /*?page=*
+Disallow: /*?filter=*
+Disallow: /*?order=*
+Disallow: /*?sort=*
+Disallow: /accounts/
+Disallow: /api/
+Disallow: /*/print/
+Disallow: /*?*
+Allow: /static/
+Allow: /media/
+Allow: /*.css$
+Allow: /*.js$
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&fbclid
+
+# Sitemap
+Sitemap: https://eshmerko.com/sitemap.xml
+Sitemap: https://eshmerko.com/sitemap_index.xml

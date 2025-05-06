@@ -54,6 +54,10 @@ class Program(models.Model):
         self.download_count += 1
         self.save()
 
+    def get_absolute_url(self):
+        """Метод для использования в sitemap"""
+        return reverse('download_program', kwargs={'program_id': self.id})
+
 class Update(models.Model):
     program = models.ForeignKey(Program, related_name='updates', on_delete=models.CASCADE)
     version = models.CharField(max_length=100)

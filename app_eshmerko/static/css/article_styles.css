@@ -58,6 +58,7 @@
     font-size: 1.8rem;
     margin-bottom: 10px;
     display: inline-block;
+    background: linear-gradient(90deg, transparent, var(--primary-color), var(--secondary-color), transparent);
 }
 
 .article-title h2::before {
@@ -96,7 +97,7 @@
 
 /* Блок списка статей */
 .article-excerpt-list {
-    color: #171717;
+    color: #d8ecff;
 }
 .article-link-list h3 {
     color: #171717;
@@ -114,14 +115,14 @@
 }
 
 .article-content a {
-    color: #3498db;
+    color: #fff;
     text-decoration: none;
     border-bottom: 1px dashed #3498db;
     transition: all 0.2s ease;
 }
 
 .article-content a:hover {
-    color: #2ecc71;
+    color: #e6f4ff;
     border-bottom: 1px solid #2ecc71;
 }
 
