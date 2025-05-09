@@ -1,6 +1,6 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Program, Update, Article
+from .models import Program, Update, Article, Project
 from django.http import HttpResponse, FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -138,3 +138,75 @@ class LatestArticlesFeed(Feed):
 
     def item_description(self, item):
         return item.meta_description
+
+class PortfolioListView(ListView):
+    """Отображение списка всех проектов портфолио"""
+    
+    model = Project
+    template_name = 'portfolio/portfolio_list.html'
+    context_object_name = 'portfolio_items'
+    paginate_by = 10  # Количество проектов на странице
+    
+    def get_queryset(self):
+        """Фильтрация проектов"""
+        queryset = super().get_queryset()
+        
+        # Фильтрация по категории (если указана в GET параметрах)
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        """Добавление дополнительных данных в контекст"""
+        context = super().get_context_data(**kwargs)
+        
+        # Добавление списка всех категорий для фильтра
+        context['categories'] = Project.objects.values_list(
+            'category', flat=True
+        ).distinct()
+        
+        # Добавление избранных проектов
+        context['featured_projects'] = Project.objects.filter(
+            is_featured=True
+        )[:3]
+        
+        return context
+
+
+class ProjectDetailView(DetailView):
+    """Отображение детальной информации о проекте"""
+    
+    model = Project
+    template_name = 'portfolio/project_detail.html'
+    context_object_name = 'project'
+    slug_url_kwarg = 'project_slug'
+    
+    def get_context_data(self, **kwargs):
+        """Добавление дополнительных данных в контекст"""
+        context = super().get_context_data(**kwargs)
+        
+        # Добавление связанных проектов той же категории
+        current_project = self.get_object()
+        context['related_projects'] = Project.objects.filter(
+            category=current_project.category
+        ).exclude(
+            id=current_project.id
+        )[:3]
+        
+        return context
+
+
+def portfolio_category_view(request, category):
+    """Отображение проектов определенной категории"""
+    
+    projects = Project.objects.filter(category=category)
+    
+    context = {
+        'portfolio_items': projects,
+        'category': category,
+        'categories': Project.objects.values_list('category', flat=True).distinct()
+    }
+    
+    return render(request, 'portfolio/portfolio_list.html', context)

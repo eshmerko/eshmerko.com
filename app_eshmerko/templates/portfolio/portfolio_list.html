@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block title %}Портфолио проектов - ESHMERKO.COM{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Портфолио выполненных проектов по разработке Python-приложений и веб-сервисов">
+<meta name="keywords" content="портфолио, проекты, Python, разработка, программирование">
+{% endblock %}
+
+{% block content %}
+
+    <div class="blog-article">
+        <!-- Заголовок раздела с техно-стилем -->
+        <div class="section-header tech-header mb-5">
+            <div class="tech-line"></div>
+                <header class="article-title">
+                    <h1 class="">
+                        <span class="tech-bracket"></span>
+                        Портфолио проектов
+                        <span class="tech-bracket"></span>
+                    </h1>
+                    <div class="article-meta">
+                        <span class="date">Законченные и текущие проекты</span>
+                    </div>
+                </header>
+            <div class="tech-line"></div>
+        </div>
+
+        <!-- Секция с избранными проектами -->
+        {% if featured_projects %}
+        <div class="featured-projects mb-5">
+            <h2 class="tech-heading mb-4">
+                <span class="tech-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="#2ecc71" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+                    </svg>
+                </span>
+                Избранные проекты
+            </h2>
+            
+            <div class="row">
+                {% for project in featured_projects %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="blog-article tech-card">
+                        <div class="tech-card-header">
+                            <span class="tech-card-type">{{ project.category }}</span>
+                            <span class="tech-card-dots">
+                                <span class="tech-dot"></span>
+                                <span class="tech-dot"></span>
+                                <span class="tech-dot"></span>
+                            </span>
+                        </div>
+                        
+                        {% if project.image %}
+                        <div class="article-image-container">
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid tech-image">
+                            <div class="tech-image-overlay">
+                                <div class="binary-overlay">01001001</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="article-title">
+                            <h2 class="article-link">{{ project.title }}</h2>
+                            <div class="article-code-line">// project_id: {{ project.id }}</div>
+                            <div class="article-meta">
+                                <span class="date">{{ project.completion_date|date:"m.Y" }}</span>
+                                <span class="author">{{ project.client }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="article-content">
+                            <p>{{ project.description|truncatewords:30 }}</p>
+                            
+                            <div class="article-tags">
+                                <span class="tech-stack-label">// Технологии:</span>
+                                <div class="tech-tags">
+                                    {% for tech in project.technologies.all %}
+                                    <span class="article-tag">{{ tech.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <a href="{% url 'project_detail' project_slug=project.slug %}" class="btn btn-tech-primary">
+                                <span class="btn-text">Подробнее</span>
+                                <span class="btn-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24">
+                                        <path fill="#2ecc71" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <div class="article-footer">
+                            <div class="tech-card-meta">
+                                <span class="tech-meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24">
+                                        <path fill="#3498db" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                                    </svg>
+                                    {{ project.completion_date|date:"m.Y" }}
+                                </span>
+                                <span class="tech-meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24">
+                                        <path fill="#3498db" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                    </svg>
+                                    {{ project.client }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Фильтр категорий -->
+        <div class="category-filter tech-filter mb-4" style="padding: 0 20px;">
+            <div class="tech-filter-header">
+                <!-- <span class="tech-filter-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="#2ecc71" d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3H19C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"/>
+                    </svg>
+                </span> -->
+                <h3 class="tech-filter-title">Фильтр по категориям</h3>
+            </div>
+            
+            <div class="tech-filter-body">
+                <a href="{% url 'portfolio_list' %}" class="tech-filter-btn {% if not category %}active{% endif %}">
+                    Все проекты
+                </a> //
+                
+                {% for cat in categories %}
+                <a href="{% url 'portfolio_category' category=cat %}" class="tech-filter-btn {% if category == cat %}active{% endif %}">
+                    {{ cat }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Основной список проектов -->
+        <div class="article-content">
+            <div class="row">
+                {% for project in portfolio_items %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="blog-article">
+                        <div class="article-code-line">// project_{{ project.id }}</div>
+                        
+                        {% if project.image %}
+                        <div class="article-image-container">
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid">
+                        </div>
+                        {% endif %}
+                        
+                        <div class="article-title">
+                            <h4>{{ project.title }}</h4>
+                            <div class="article-meta">
+                                <span class="date">{{ project.completion_date|date:"m.Y" }}</span>
+                                <!-- <span class="author">{{ project.client }}</span> -->
+                                <span class="category">{{ project.category }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="article-content">
+                            <p>{{ project.description|truncatewords:30 }}</p>
+                            
+                            <div class="article-tags">
+                                {% for tech in project.technologies.all %}
+                                <span class="article-tag">{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+                            
+                            <a href="{% url 'project_detail' project_slug=project.slug %}" class="btn comment-submit">
+                                Подробнее
+                                <svg width="16" height="16" viewBox="0 0 24 24" style="margin-left: 5px;">
+                                    <path fill="#121212" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        
+                        <div class="article-footer">
+                            <div class="article-tags">
+                                {% for tech in project.technologies.all|slice:":3" %}
+                                <span class="article-tag">{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="article-share">
+                                <button class="share-button">
+                                    <svg viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                    </svg>
+                                    Поделиться
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-state tech-empty">
+                        <div class="tech-empty-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24">
+                                <path fill="#2ecc71" d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="tech-empty-title">Проекты не найдены</h3>
+                        <p class="tech-empty-text">По выбранным критериям не найдено ни одного проекта.</p>
+                        <a href="{% url 'portfolio_list' %}" class="btn comment-submit">
+                            <svg width="16" height="16" viewBox="0 0 24 24" style="margin-right: 5px;">
+                                <path fill="#121212" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+                            </svg>
+                            Сбросить фильтры
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Пагинация -->
+        {% if is_paginated %}
+        <div class="pagination-container">
+            <ul class="pagination tech-pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="#2ecc71" d="M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="#2ecc71" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+                        </svg>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="#2ecc71" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="#2ecc71" d="M5.59,7.41L10.17,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M11.59,7.41L16.17,12L11.59,16.59L13,18L19,12L13,6L11.59,7.41Z"/>
+                        </svg>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Технологическая декорация внизу страницы -->
+        <div class="tech-decoration mt-5 px-4 pb-4">
+            <div class="tech-line"></div>
+            <div class="tech-decoration-element">
+                <span class="tech-code">/* portfolio.end() */</span>
+            </div>
+        </div>
+        
+        <!-- Кнопка "Наверх" -->
+        <div class="back-to-top">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
+            </svg>
+        </div>
+        
+        <!-- Индикатор прогресса чтения -->
+        <div class="reading-progress"></div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Скрипт для кнопки "Наверх"
+    document.addEventListener('DOMContentLoaded', function() {
+        const backToTopButton = document.querySelector('.back-to-top');
+        const readingProgress = document.querySelector('.reading-progress');
+        
+        window.addEventListener('scroll', function() {
+            // Показать/скрыть кнопку "Наверх"
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+            
+            // Обновить индикатор прогресса чтения
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            readingProgress.style.width = progress + '%';
+        });
+        
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+{% endblock %}

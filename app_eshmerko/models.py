@@ -81,3 +81,77 @@ class Update(models.Model):
             return tuple(map(int, self.version.split('.')))
         except (ValueError, AttributeError):
             return tuple()  # Возвращаем пустой кортеж при ошибках
+        
+class Project(models.Model):
+    """Модель для хранения проектов портфолио"""
+    
+    title = models.CharField("Название проекта", max_length=200)
+    slug = models.SlugField("URL", max_length=255, unique=True, blank=True)
+    short_description = RichTextField("Краткое описание", max_length=255)
+    full_description = RichTextField("Полное описание")
+    category = models.CharField("Категория", max_length=100)
+    technologies = models.CharField("Технологии", max_length=255)
+    completion_date = models.DateField("Дата завершения")
+    demo_url = models.URLField("Ссылка на демо", blank=True, null=True)
+    github_url = models.URLField("Ссылка на GitHub", blank=True, null=True)
+    is_featured = models.BooleanField("Избранный проект", default=False)
+    created_at = models.DateTimeField("Создано", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлено", auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = "Проект"
+        verbose_name_plural = "Проекты"
+        ordering = ['-completion_date']
+
+
+class ProjectImage(models.Model):
+    """Модель для хранения изображений проекта"""
+    
+    project = models.ForeignKey(
+        Project, 
+        on_delete=models.CASCADE, 
+        related_name="images", 
+        verbose_name="Проект"
+    )
+    image = models.ImageField("Изображение", upload_to="portfolio/images/")
+    caption = models.CharField("Подпись", max_length=200, blank=True)
+    order = models.PositiveIntegerField("Порядок", default=0)
+    
+    def __str__(self):
+        return f"Изображение {self.order} для {self.project.title}"
+    
+    class Meta:
+        verbose_name = "Изображение проекта"
+        verbose_name_plural = "Изображения проектов"
+        ordering = ['order']
+
+
+class Testimonial(models.Model):
+    """Модель для хранения отзывов клиентов о проекте"""
+    
+    project = models.ForeignKey(
+        Project, 
+        on_delete=models.CASCADE, 
+        related_name="testimonials", 
+        verbose_name="Проект"
+    )
+    author = models.CharField("Автор", max_length=100)
+    text = models.TextField("Текст отзыва")
+    company = models.CharField("Компания", max_length=100, blank=True)
+    created_at = models.DateTimeField("Создано", auto_now_add=True)
+    
+    def __str__(self):
+        return f"Отзыв от {self.author} о {self.project.title}"
+    
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+        ordering = ['-created_at']
