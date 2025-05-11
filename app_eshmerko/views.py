@@ -1,6 +1,6 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Program, Update, Article, Project
+from .models import Program, Update, Article, Project, ProjectCategory
 from django.http import HttpResponse, FileResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -145,7 +145,7 @@ class PortfolioListView(ListView):
     model = Project
     template_name = 'portfolio/portfolio_list.html'
     context_object_name = 'portfolio_items'
-    paginate_by = 10  # Количество проектов на странице
+    paginate_by = 9  # Количество проектов на странице
     
     def get_queryset(self):
         """Фильтрация проектов"""
@@ -159,14 +159,9 @@ class PortfolioListView(ListView):
         return queryset
     
     def get_context_data(self, **kwargs):
-        """Добавление дополнительных данных в контекст"""
         context = super().get_context_data(**kwargs)
-        
-        # Добавление списка всех категорий для фильтра
-        context['categories'] = Project.objects.values_list(
-            'category', flat=True
-        ).distinct()
-        
+        context['categories'] = ProjectCategory.objects.all()  # Было через values_list
+                
         # Добавление избранных проектов
         context['featured_projects'] = Project.objects.filter(
             is_featured=True
@@ -198,15 +193,15 @@ class ProjectDetailView(DetailView):
         return context
 
 
-def portfolio_category_view(request, category):
-    """Отображение проектов определенной категории"""
-    
+def portfolio_category_view(request, slug):
+    """Отображение проектов определенной категории по слагу"""
+    category = get_object_or_404(ProjectCategory, slug=slug)
     projects = Project.objects.filter(category=category)
     
     context = {
         'portfolio_items': projects,
-        'category': category,
-        'categories': Project.objects.values_list('category', flat=True).distinct()
+        'category': category.name,  # Для совместимости с текущим шаблоном
+        'categories': ProjectCategory.objects.all()
     }
     
     return render(request, 'portfolio/portfolio_list.html', context)

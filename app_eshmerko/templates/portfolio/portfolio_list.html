@@ -43,7 +43,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="blog-article tech-card">
                         <div class="tech-card-header">
-                            <span class="tech-card-type">{{ project.category }}</span>
+                            <span class="tech-card-type">{{ project.category.name }}</span>
                             <span class="tech-card-dots">
                                 <span class="tech-dot"></span>
                                 <span class="tech-dot"></span>
@@ -51,9 +51,9 @@
                             </span>
                         </div>
                         
-                        {% if project.image %}
+                        {% if project.images.first %}
                         <div class="article-image-container">
-                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid tech-image">
+                            <img src="{{ project.images.first.image.url }}" alt="{{ project.title }}" class="img-fluid tech-image">
                             <div class="tech-image-overlay">
                                 <div class="binary-overlay">01001001</div>
                             </div>
@@ -65,18 +65,18 @@
                             <div class="article-code-line">// project_id: {{ project.id }}</div>
                             <div class="article-meta">
                                 <span class="date">{{ project.completion_date|date:"m.Y" }}</span>
-                                <span class="author">{{ project.client }}</span>
+                                <!-- <span class="author">{{ project.client }}</span> -->
                             </div>
                         </div>
                         
                         <div class="article-content">
-                            <p>{{ project.description|truncatewords:30 }}</p>
+                            <p>{{ project.short_description|safe|truncatewords_html:30 }}</p>
                             
                             <div class="article-tags">
                                 <span class="tech-stack-label">// Технологии:</span>
                                 <div class="tech-tags">
-                                    {% for tech in project.technologies.all %}
-                                    <span class="article-tag">{{ tech.name }}</span>
+                                    {% for tech in project.technologies.split|slice:":3" %}
+                                    <span class="article-tag">{{ tech }}</span>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                     <svg width="14" height="14" viewBox="0 0 24 24">
                                         <path fill="#3498db" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
                                     </svg>
-                                    {{ project.client }}
+                                    {{ project.category.name }}
                                 </span>
                             </div>
                         </div>
@@ -117,11 +117,6 @@
         <!-- Фильтр категорий -->
         <div class="category-filter tech-filter mb-4" style="padding: 0 20px;">
             <div class="tech-filter-header">
-                <!-- <span class="tech-filter-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24">
-                        <path fill="#2ecc71" d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3H19C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"/>
-                    </svg>
-                </span> -->
                 <h3 class="tech-filter-title">Фильтр по категориям</h3>
             </div>
             
@@ -131,9 +126,11 @@
                 </a> //
                 
                 {% for cat in categories %}
-                <a href="{% url 'portfolio_category' category=cat %}" class="tech-filter-btn {% if category == cat %}active{% endif %}">
-                    {{ cat }}
-                </a>
+                    <a href="{% url 'portfolio_category' slug=cat.slug %}" 
+                       class="tech-filter-btn {% if category and category.slug == cat.slug %}active{% endif %}">
+                        {{ cat.name }}
+                    </a>
+                    {% if not forloop.last %} // {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -146,9 +143,9 @@
                     <div class="blog-article">
                         <div class="article-code-line">// project_{{ project.id }}</div>
                         
-                        {% if project.image %}
+                        {% if project.images.first %}
                         <div class="article-image-container">
-                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid">
+                            <img src="{{ project.images.first.image.url }}" alt="{{ project.title }}" class="img-fluid">
                         </div>
                         {% endif %}
                         
@@ -156,19 +153,18 @@
                             <h4>{{ project.title }}</h4>
                             <div class="article-meta">
                                 <span class="date">{{ project.completion_date|date:"m.Y" }}</span>
-                                <!-- <span class="author">{{ project.client }}</span> -->
-                                <span class="category">{{ project.category }}</span>
+                                <span class="category">{{ project.category.name }}</span>
                             </div>
                         </div>
                         
                         <div class="article-content">
-                            <p>{{ project.description|truncatewords:30 }}</p>
+                            <p>{{ project.short_description|safe|truncatewords_html:30 }}</p>
                             
-                            <div class="article-tags">
-                                {% for tech in project.technologies.all %}
-                                <span class="article-tag">{{ tech.name }}</span>
+                            <!-- <div class="article-tags">
+                                {% for tech in project.technologies.split|slice:":3" %}
+                                <span class="article-tag">{{ tech }}</span>
                                 {% endfor %}
-                            </div>
+                            </div> -->
                             
                             <a href="{% url 'project_detail' project_slug=project.slug %}" class="btn comment-submit">
                                 Подробнее
@@ -180,8 +176,8 @@
                         
                         <div class="article-footer">
                             <div class="article-tags">
-                                {% for tech in project.technologies.all|slice:":3" %}
-                                <span class="article-tag">{{ tech.name }}</span>
+                                {% for tech in project.technologies.split|slice:":3" %}
+                                <span class="article-tag">{{ tech }}</span>
                                 {% endfor %}
                             </div>
                             <div class="article-share">
@@ -219,49 +215,51 @@
 
         <!-- Пагинация -->
         {% if is_paginated %}
-        <div class="pagination-container">
-            <ul class="pagination tech-pagination">
+        <div class="techpg-pagination-container">
+            <ul class="techpg-pagination techpg-tech-pagination">
                 {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                            <path fill="#2ecc71" d="M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z"/>
+                <li class="techpg-page-item">
+                    <a class="techpg-page-link" href="?page=1" aria-label="Первая страница">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z"/>
                         </svg>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                            <path fill="#2ecc71" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+                <li class="techpg-page-item">
+                    <a class="techpg-page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Предыдущая страница">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
                         </svg>
                     </a>
                 </li>
                 {% endif %}
-
                 {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <li class="page-item active">
-                    <span class="page-link">{{ num }}</span>
-                </li>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
-                {% endif %}
+                    {% if page_obj.number == num %}
+                        <li class="techpg-page-item techpg-active" aria-current="page">
+                            <span class="techpg-page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' or num == 1 or num == page_obj.paginator.num_pages %}
+                        <li class="techpg-page-item">
+                            <a class="techpg-page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% elif num == 2 or num == page_obj.paginator.num_pages|add:'-1' %}
+                        <li class="techpg-page-item techpg-disabled">
+                            <span class="techpg-page-link">...</span>
+                        </li>
+                    {% endif %}
                 {% endfor %}
-
                 {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                            <path fill="#2ecc71" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                <li class="techpg-page-item">
+                    <a class="techpg-page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Следующая страница">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
                         </svg>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
-                        <svg width="16" height="16" viewBox="0 0 24 24">
-                            <path fill="#2ecc71" d="M5.59,7.41L10.17,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M11.59,7.41L16.17,12L11.59,16.59L13,18L19,12L13,6L11.59,7.41Z"/>
+                <li class="techpg-page-item">
+                    <a class="techpg-page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Последняя страница">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M5.59,7.41L10.17,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M11.59,7.41L16.17,12L11.59,16.59L13,18L19,12L13,6L11.59,7.41Z"/>
                         </svg>
                     </a>
                 </li>

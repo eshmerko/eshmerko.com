@@ -327,72 +327,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{% static 'js/share.js' %}"></script>
 
+    {% if jsonld_data %}
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "ProfessionalService",
-            "name": "eshmerko.com",
-            "description": "Профессиональная разработка телеграм ботов, парсеров данных и программного обеспечения на Python",
-            "url": "https://eshmerko.com",
-            "logo": "https://eshmerko.com/static/images/logo.svg",
-            "sameAs": ["https://t.me/eshmerko"],
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "telephone": "+375447777710",
-              "contactType": "customer service",
-              "email": "info@eshmerko.com"
-            },
-            "address": {
-              "@type": "PostalAddress",
-              "addressCountry": "BY"
-            },
-            "offers": {
-              "@type": "Offer",
-              "itemOffered": [
-                {
-                  "@type": "Service",
-                  "name": "Разработка Телеграм Ботов",
-                  "description": "Создание телеграм ботов любой сложности для автоматизации бизнес-процессов",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "50",
-                    "priceCurrency": "USD"
-                  }
-                },
-                {
-                  "@type": "Service",
-                  "name": "Парсинг Данных",
-                  "description": "Разработка парсеров данных для извлечения информации из веб-сайтов",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "50",
-                    "priceCurrency": "USD"
-                  }
-                },
-                {
-                  "@type": "Service",
-                  "name": "Разработка ПО",
-                  "description": "Разработка программного обеспечения на Python для решения различных задач",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "300",
-                    "priceCurrency": "USD"
-                  }
-                },
-                {
-                  "@type": "Service",
-                  "name": "Разработка сайтов на Django",
-                  "description": "Создаю мощные и безопасные веб-приложения любой сложности на Django",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "500",
-                    "priceCurrency": "USD"
-                  }
-                }
-              ]
-            }
-          }
+        {{ jsonld_data|safe }}
     </script>
+    {% endif %}
 
     <!-- Скрипт для анимации и интерактивности навбара -->
 <script>

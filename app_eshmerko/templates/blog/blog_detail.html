@@ -32,9 +32,11 @@
 {% endblock %}
 
 {% block content %}
+<div class="blog-article">
     <div class="article-content">
         {{ article.content|safe }}  <!-- Обязательно используйте фильтр safe -->
     </div>
+</div>
 
     <!-- Подключение кастомных стилей -->
     <link rel="stylesheet" href="{% static 'css/article_styles.css' %}">

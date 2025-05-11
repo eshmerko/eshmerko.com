@@ -27,6 +27,8 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:  # Только при создании новой статьи
             self.published_date = timezone.now()
+        if not self.slug:
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -34,11 +36,6 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article_detail', kwargs={'slug': self.slug})
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
 
 class Program(models.Model):
     name = models.CharField(max_length=255)
@@ -81,6 +78,26 @@ class Update(models.Model):
             return tuple(map(int, self.version.split('.')))
         except (ValueError, AttributeError):
             return tuple()  # Возвращаем пустой кортеж при ошибках
+
+# Новая модель для категорий проектов
+class ProjectCategory(models.Model):
+    """Модель для хранения категорий проектов"""
+    
+    name = models.CharField("Название категории", max_length=100, unique=True)
+    slug = models.SlugField("URL", max_length=100, unique=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name, allow_unicode=True)  # Для кириллицы
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Категория проекта"
+        verbose_name_plural = "Категории проектов"
+        ordering = ['name']
         
 class Project(models.Model):
     """Модель для хранения проектов портфолио"""
@@ -89,7 +106,13 @@ class Project(models.Model):
     slug = models.SlugField("URL", max_length=255, unique=True, blank=True)
     short_description = RichTextField("Краткое описание", max_length=255)
     full_description = RichTextField("Полное описание")
-    category = models.CharField("Категория", max_length=100)
+    # Заменяем поле category на связь с моделью ProjectCategory
+    category = models.ForeignKey(
+        ProjectCategory, 
+        on_delete=models.PROTECT,  # PROTECT предотвращает удаление категории, используемой в проектах
+        related_name="projects",
+        verbose_name="Категория"
+    )
     technologies = models.CharField("Технологии", max_length=255)
     completion_date = models.DateField("Дата завершения")
     demo_url = models.URLField("Ссылка на демо", blank=True, null=True)

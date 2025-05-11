@@ -273,7 +273,7 @@
 #services {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 1rem;
+    padding: 1rem 1rem;
     position: relative;
     overflow: hidden;
 }
@@ -302,7 +302,7 @@
 
 /* Карточки услуг */
 .service-card {
-    background: rgb(46 51 56);
+    background: linear-gradient(to bottom right, #121212, #1e2123);
     border-radius: 8px;
     margin-bottom: 2rem;
     overflow: hidden;
@@ -1799,4 +1799,15 @@
 /* техкод*/
 .tech-code {
     color: #27ae60;
+}
+
+pre {
+    display: block;
+    font-size: 87.5%;
+    color: #b6b6b6 !important;
+}
+
+/* Модальное окно */
+.modal-content {
+    background-color: #121212 !important;
 }

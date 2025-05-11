@@ -13,6 +13,6 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.ArticleDetailView.as_view(), name='article_detail'),
     path('blog/rss/', views.LatestArticlesFeed(), name='articles_rss'),
     path('portfolio/', views.PortfolioListView.as_view(), name='portfolio_list'),
-    path('portfolio/category/<str:category>/', views.portfolio_category_view, name='portfolio_category'),
+    path('portfolio/category/<slug:slug>/', views.portfolio_category_view, name='portfolio_category'),
     path('portfolio/project/<slug:project_slug>/', views.ProjectDetailView.as_view(), name='project_detail'),
 ]

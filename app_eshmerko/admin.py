@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from django import forms
 from ckeditor.widgets import CKEditorWidget
-from .models import Program, Update, Article, Project, ProjectImage, Testimonial
+from .models import Program, Update, Article, Project, ProjectImage, Testimonial, ProjectCategory
 from django.utils.safestring import mark_safe
 from django.utils.html import strip_tags
 
@@ -82,6 +82,13 @@ class UpdateAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+# --- ProjectCategory ---
+@admin.register(ProjectCategory)
+class ProjectCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ('name',)
 
 # --- Project ---
 class ProjectImageInline(admin.TabularInline):
