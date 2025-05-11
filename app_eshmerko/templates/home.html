@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% csrf_token %}
 {% block title %}Главная - eshmerko.com{% endblock %}
 
 {% block content %}
@@ -129,16 +129,13 @@
 <!-- Подключение Font Awesome для иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<!-- Скрипт для анимации печатающегося текста -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Анимация для эффекта печатания
+        // Анимация текста
         const text = "Разработка на Python";
         const typingElement = document.querySelector('.typing-text');
         const cursor = document.querySelector('.cursor');
-        
         typingElement.textContent = "";
-        
         let i = 0;
         const typingInterval = setInterval(() => {
             if (i < text.length) {
@@ -149,57 +146,45 @@
             }
         }, 100);
     });
-</script>
-<script>
-    // Функции для управления модальным окном
+
+    // Модальное окно
     function openModal(serviceType) {
         const modal = document.getElementById('modal');
         const serviceTypeInput = document.getElementById('serviceType');
-        
         serviceTypeInput.value = serviceType;
         modal.style.display = 'flex';
-        
-        // Предотвращаем прокрутку страницы
         document.body.style.overflow = 'hidden';
     }
-    
+
     function closeModal() {
         const modal = document.getElementById('modal');
         modal.style.display = 'none';
-        
-        // Восстанавливаем прокрутку страницы
         document.body.style.overflow = 'auto';
     }
-    
-    // Обработчики модального окна с вашего оригинального кода
+
     document.querySelectorAll('[href="#contact"]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const serviceName = btn.closest('.service-info').querySelector('.service-title').textContent;
             document.getElementById('serviceType').value = serviceName;
             document.getElementById('modal').style.display = 'flex';
-            // Предотвращаем прокрутку страницы
             document.body.style.overflow = 'hidden';
         });
     });
 
-    // Закрытие модального окна при клике на крестик
-    document.querySelector('.close-btn').addEventListener('click', () => {
-        closeModal();
-    });
-    
-    // Закрытие модального окна при клике на затемненный фон
+    document.querySelector('.close-btn').addEventListener('click', closeModal);
+
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('modal');
         if (event.target === modal) {
             closeModal();
         }
     });
-    
-    // Отправка формы в Telegram (из вашего оригинального кода)
+
+    // Отправка формы через Django backend
     document.getElementById('orderForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const formData = {
             service: document.getElementById('serviceType').value,
             name: document.getElementById('name').value,
@@ -207,33 +192,43 @@
             message: document.getElementById('message').value
         };
 
-        const telegramMessage = `
-            📌 Новая заявка:
-            Услуга: ${formData.service}
-            Имя: ${formData.name}
-            Телефон: ${formData.phone}
-            Сообщение: ${formData.message || 'Нет сообщения'}
-        `;
-
         try {
-            await fetch(`https://api.telegram.org/bot5876243681:AAGajxM9drvH8c8w5PcB2xRdPMs36ZdBMR0/sendMessage`, {
+            const response = await fetch('/send-order/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
                 },
-                body: JSON.stringify({
-                    chat_id: '314485159',
-                    text: telegramMessage
-                })
+                body: JSON.stringify(formData)
             });
 
-            alert('Заявка успешно отправлена!');
-            closeModal();
-            document.getElementById('orderForm').reset();
+            if (response.ok) {
+                alert('Заявка успешно отправлена!');
+                closeModal();
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Ошибка отправки. Попробуйте позже.');
+            }
         } catch (error) {
-            alert('Ошибка отправки. Попробуйте ещё раз.');
+            alert('Ошибка сети. Попробуйте ещё раз.');
         }
     });
+
+    // Получение CSRF-токена
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 
 {% endblock %}

@@ -1,13 +1,24 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
 from .models import Program, Update, Article, Project, ProjectCategory
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.contrib.syndication.views import Feed
+
+import json
+import requests
+from django.views.decorators.csrf import csrf_exempt
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Вставьте ваш токен и chat_id
+TELEGRAM_BOT_TOKEN = '5876243681:AAGajxM9drvH8c8w5PcB2xRdPMs36ZdBMR0'
+TELEGRAM_CHAT_ID = '314485159'
 
 def home(request):
     """Представление для главной страницы"""
@@ -205,3 +216,46 @@ def portfolio_category_view(request, slug):
     }
     
     return render(request, 'portfolio/portfolio_list.html', context)
+
+@csrf_exempt
+def send_order(request):
+    if request.method == 'POST':
+        try:
+            logger.info(">>> Запрос получен")
+
+            data = json.loads(request.body)
+            logger.info(f">>> Данные: {data}")
+
+            service = data.get('service')
+            name = data.get('name')
+            phone = data.get('phone')
+            message = data.get('message')
+
+            text = f"📩 Новая заявка:\n\n" \
+                   f"🛠 Услуга: {service}\n" \
+                   f"👤 Имя: {name}\n" \
+                   f"📞 Телефон: {phone}\n" \
+                   f"💬 Сообщение: {message}"
+
+            telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            payload = {'chat_id': TELEGRAM_CHAT_ID, 'text': text}
+
+            response = requests.post(telegram_url, data=payload, timeout=5)
+
+            logger.info(f">>> Telegram response: {response.status_code}")
+
+            if response.status_code == 200:
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Ошибка Telegram'}, status=500)
+
+        except json.JSONDecodeError:
+            logger.exception("Ошибка при разборе JSON")
+            return JsonResponse({'status': 'error', 'message': 'Невалидный JSON'}, status=400)
+
+        except Exception as e:
+            logger.exception("Ошибка при обработке запроса")
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
+

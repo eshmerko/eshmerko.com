@@ -15,4 +15,5 @@ urlpatterns = [
     path('portfolio/', views.PortfolioListView.as_view(), name='portfolio_list'),
     path('portfolio/category/<slug:slug>/', views.portfolio_category_view, name='portfolio_category'),
     path('portfolio/project/<slug:project_slug>/', views.ProjectDetailView.as_view(), name='project_detail'),
+    path('send-order/', views.send_order, name='send_order'),
 ]
