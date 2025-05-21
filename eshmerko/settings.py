@@ -154,3 +154,20 @@ CKEDITOR_CONFIGS = {
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_ALLOWED_ORIGINS = [
+    "https://eshmerko.com",
+    "http://localhost:8000",
+    # добавьте другие домены при необходимости
+]
+
+CORS_ALLOW_METHODS = [
+    'POST',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'user-agent',
+    'x-requested-with'
+]

@@ -1,0 +1,236 @@
+<article class="blog-article">
+
+    <div class="article-code-line">BD_VERSION</div>
+        
+    <div class="article-beginning">Май 2025 Программирование Python</div>
+    
+    <div class="article-title">
+        <h2>Работа с базами данных в Telegram ботах</h2>
+        <div class="article-meta">
+            <span class="category">Python</span>
+            <span class="date">Май 2025</span>
+        </div>
+    </div>
+
+    <div class="article-content">
+
+        <h1 id="introduction">Работа с базами данных в Telegram ботах</h1>
+            
+        <p>Для хранения данных в Telegram ботах можно использовать различные решения в зависимости от сложности и масштаба проекта.</p>
+
+        <h2 id="introduction">SQLite для локальных решений</h2>
+
+        <p>SQLite — легковесная встраиваемая СУБД, идеальная для небольших ботов с простой структурой данных.</p>
+
+        <div class="code-block">
+            <code>
+                <span class="code-keyword">import</span> sqlite3<br>
+                <br>
+                <span class="code-comment"># Создание и подключение к базе данных</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">init_db</span>():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn = sqlite3.connect(<span class="code-string">'bot_database.db'</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor = conn.cursor()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Создание таблицы пользователей</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(<span class="code-string">'''<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;CREATE TABLE IF NOT EXISTS users (<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id INTEGER PRIMARY KEY,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username TEXT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name TEXT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name TEXT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;'''</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.commit()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.close()<br>
+                <br>
+                <span class="code-comment"># Регистрация нового пользователя</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">register_user</span>(user_id, username, first_name, last_name):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn = sqlite3.connect(<span class="code-string">'bot_database.db'</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor = conn.cursor()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"INSERT OR IGNORE INTO users (user_id, username, first_name, last_name) VALUES (?, ?, ?, ?)"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(user_id, username, first_name, last_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.commit()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.close()<br>
+                <br>
+                <span class="code-comment"># Функция для команды /start, которая регистрирует пользователя</span><br>
+                <span class="code-keyword">async def</span> <span class="code-function">start</span>(update: Update, context: ContextTypes.DEFAULT_TYPE):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;user = update.effective_user<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;register_user(user.id, user.username, user.first_name, user.last_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">await</span> update.message.reply_text(<span class="code-string">f'Привет, {user.first_name}! Ты успешно зарегистрирован.'</span>)<br>
+                <br>
+                <span class="code-comment"># Не забудьте вызвать init_db() при запуске бота</span><br>
+                <span class="code-keyword">if</span> __name__ == <span class="code-string">'__main__'</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;init_db()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;main()
+            </code>
+        </div>
+
+        <h3 id="introduction">Расширенные возможности SQLite</h3>
+
+        <p>Добавим функции для работы с пользовательскими данными и настройками.</p>
+
+        <div class="code-block">
+            <code>
+                <span class="code-comment"># Сохранение пользовательских настроек</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">save_user_settings</span>(user_id, setting_name, setting_value):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn = sqlite3.connect(<span class="code-string">'bot_database.db'</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor = conn.cursor()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Создаем таблицу настроек, если её нет</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(<span class="code-string">'''<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;CREATE TABLE IF NOT EXISTS user_settings (<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id INTEGER,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setting_name TEXT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setting_value TEXT,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNIQUE(user_id, setting_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;'''</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Вставляем или обновляем настройку</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(<span class="code-string">'''<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;INSERT OR REPLACE INTO user_settings (user_id, setting_name, setting_value)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;VALUES (?, ?, ?)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;'''</span>, (user_id, setting_name, setting_value))<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.commit()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.close()<br>
+                <br>
+                <span class="code-comment"># Получение настройки пользователя</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">get_user_setting</span>(user_id, setting_name, default=None):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn = sqlite3.connect(<span class="code-string">'bot_database.db'</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor = conn.cursor()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"SELECT setting_value FROM user_settings WHERE user_id = ? AND setting_name = ?"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(user_id, setting_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;result = cursor.fetchone()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn.close()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> result[0] <span class="code-keyword">if</span> result <span class="code-keyword">else</span> default
+            </code>
+        </div>
+
+        <div class="tip-block">
+            <strong>Совет:</strong> При работе с SQLite в многопоточной среде используйте контекстный менеджер для безопасного управления соединениями.
+        </div>
+
+        <h2 id="introduction">PostgreSQL для масштабируемых решений</h2>
+
+        <p>Для более крупных проектов рекомендуется использовать полноценные СУБД, такие как PostgreSQL.</p>
+
+        <div class="code-block">
+            <code>
+                <span class="code-keyword">import</span> psycopg2<br>
+                <span class="code-keyword">from</span> psycopg2 <span class="code-keyword">import</span> pool<br>
+                <br>
+                <span class="code-comment"># Создание пула соединений</span><br>
+                connection_pool = psycopg2.pool.SimpleConnectionPool(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;1, 20,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;host=<span class="code-string">"localhost"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;database=<span class="code-string">"telegram_bot"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;user=<span class="code-string">"postgres"</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;password=<span class="code-string">"password"</span><br>
+                )<br>
+                <br>
+                <span class="code-comment"># Функция для выполнения запросов</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">execute_query</span>(query, params=None):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;conn = connection_pool.getconn()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">try</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">with</span> conn.cursor() <span class="code-keyword">as</span> cursor:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cursor.execute(query, params)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conn.commit()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> cursor.description:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> cursor.fetchall()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">finally</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_pool.putconn(conn)
+            </code>
+        </div>
+
+        <h3 id="introduction">Пример использования PostgreSQL</h3>
+
+        <div class="code-block">
+            <code>
+                <span class="code-comment"># Инициализация базы данных</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">init_postgresql_db</span>():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;create_users_table = <span class="code-string">'''<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;CREATE TABLE IF NOT EXISTS users (<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id BIGINT PRIMARY KEY,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username VARCHAR(255),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name VARCHAR(255),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name VARCHAR(255),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;);<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;'''</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;execute_query(create_users_table)<br>
+                <br>
+                <span class="code-comment"># Регистрация пользователя</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">register_pg_user</span>(user_id, username, first_name, last_name):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;query = <span class="code-string">'''<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;INSERT INTO users (user_id, username, first_name, last_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;VALUES (%s, %s, %s, %s)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;ON CONFLICT (user_id) DO NOTHING<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;'''</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;execute_query(query, (user_id, username, first_name, last_name))<br>
+                <br>
+                <span class="code-comment"># Функция для команды /start</span><br>
+                <span class="code-keyword">async def</span> <span class="code-function">start_pg</span>(update: Update, context: ContextTypes.DEFAULT_TYPE):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;user = update.effective_user<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;register_pg_user(user.id, user.username, user.first_name, user.last_name)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">await</span> update.message.reply_text(<span class="code-string">f'Привет, {user.first_name}! Ты успешно зарегистрирован.'</span>)
+            </code>
+        </div>
+
+        <h2 id="introduction">MongoDB для хранения неструктурированных данных</h2>
+
+        <p>Когда требуется хранить сложные или гибкие структуры данных, MongoDB является отличным выбором.</p>
+
+        <div class="code-block">
+            <code>
+                <span class="code-keyword">from</span> pymongo <span class="code-keyword">import</span> MongoClient<br>
+                <br>
+                <span class="code-comment"># Подключение к MongoDB</span><br>
+                client = MongoClient(<span class="code-string">'mongodb://localhost:27017/'</span>)<br>
+                db = client[<span class="code-string">'telegram_bot_db'</span>]<br>
+                users_collection = db[<span class="code-string">'users'</span>]<br>
+                <br>
+                <span class="code-comment"># Сохранение пользователя</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">save_user</span>(user_data):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> users_collection.update_one(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<span class="code-string">'user_id'</span>: user_data[<span class="code-string">'user_id'</span>]},<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<span class="code-string">'$set'</span>: user_data},<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upsert=<span class="code-keyword">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                <br>
+                <span class="code-comment"># Получение пользователя</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">get_user</span>(user_id):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> users_collection.find_one({<span class="code-string">'user_id'</span>: user_id})
+            </code>
+        </div>
+
+        <h2 id="introduction">Redis для кэширования и временных данных</h2>
+
+        <p>Redis — это высокопроизводительное хранилище ключ-значение, идеальное для сессий, кэширования и временных данных.</p>
+
+        <div class="code-block">
+            <code>
+                <span class="code-keyword">import</span> redis<br>
+                <br>
+                <span class="code-comment"># Подключение к Redis</span><br>
+                redis_client = redis.Redis(host=<span class="code-string">'localhost'</span>, port=6379, db=0)<br>
+                <br>
+                <span class="code-comment"># Сохранение временных данных</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">save_user_state</span>(user_id, state_data, ttl=3600):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">"""Сохраняет состояние пользователя с временем жизни в секундах"""</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;key = <span class="code-string">f"user:{user_id}:state"</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;redis_client.hmset(key, state_data)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;redis_client.expire(key, ttl)<br>
+                <br>
+                <span class="code-comment"># Получение данных</span><br>
+                <span class="code-keyword">def</span> <span class="code-function">get_user_state</span>(user_id):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">"""Получает состояние пользователя"""</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;key = <span class="code-string">f"user:{user_id}:state"</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;data = redis_client.hgetall(key)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> {k.decode(<span class="code-string">'utf-8'</span>): v.decode(<span class="code-string">'utf-8'</span>) <span class="code-keyword">for</span> k, v <span class="code-keyword">in</span> data.items()} <span class="code-keyword">if</span> data <span class="code-keyword">else</span> {}
+            </code>
+        </div>
+    </div>
+</div>

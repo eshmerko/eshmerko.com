@@ -12,4 +12,9 @@ urlpatterns = [
     path('blog/', views.ArticleListView.as_view(), name='blog'),
     path('blog/<slug:slug>/', views.ArticleDetailView.as_view(), name='article_detail'),
     path('blog/rss/', views.LatestArticlesFeed(), name='articles_rss'),
+    path('portfolio/', views.PortfolioListView.as_view(), name='portfolio_list'),
+    path('portfolio/category/<slug:slug>/', views.portfolio_category_view, name='portfolio_category'),
+    path('portfolio/project/<slug:project_slug>/', views.ProjectDetailView.as_view(), name='project_detail'),
+    path('send-order/', views.send_order, name='send_order'),
+    path('api/track-launch/', views.TrackLaunchView.as_view(), name='track_launch'),
 ]

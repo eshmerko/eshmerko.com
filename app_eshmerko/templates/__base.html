@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Разработка на Python | Телеграм боты и парсеры | eshmerko.com{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Профессиональная разработка телеграм ботов, парсеров данных и программного обеспечения на Python. Автоматизация бизнес-процессов, качественно и быстро.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}Python разработка, телеграм боты, парсинг данных, автоматизация бизнеса, разработка ПО{% endblock %}">
+    <meta name="author" content="eshmerko.com">
+
+    <!-- Социальные метатеги -->
+    <meta property="og:title" content="{% block og_title %}Разработка на Python | eshmerko.com{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Профессиональная разработка телеграм ботов, парсеров данных и ПО на Python{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-image.jpg' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Канонический URL -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- Подключаем стили -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/article_styles.css' %}" rel="stylesheet" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- JavaScript CDN -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap JS + Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Mvc" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Alpine.js для интерактивных компонентов -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ 
+    ym(93970705, "init", {
+         clickmap:true,
+         trackLinks:true,
+         accurateTrackBounce:true
+    });
+ </script>
+ <noscript><div><img src="https://mc.yandex.ru/watch/93970705" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+ <!-- /Yandex.Metrika counter -->
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-tech">
+        <div class="container">
+            <!-- Обновленный логотип -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <div class="logo-container">
+                    <svg width="300" height="67" viewBox="0 0 320 70" xmlns="http://www.w3.org/2000/svg" class="main-logo">
+                        <!-- Фон логотипа с анимированной границей -->
+                        <rect class="logo-bg" width="320" height="70" rx="5" fill="#1a1a1a" />
+                        
+                        <!-- Декоративные элементы кода с пульсацией -->
+                        <g fill="#2ecc71" opacity="0.2" class="code-elements">
+                            <circle class="pulse-element" cx="20" cy="20" r="5" />
+                            <circle class="pulse-element delay-1" cx="300" cy="20" r="5" />
+                            <circle class="pulse-element delay-2" cx="20" cy="50" r="5" />
+                            <circle class="pulse-element delay-3" cx="300" cy="50" r="5" />
+                            
+                            <!-- Линии кода с анимацией печати -->
+                            <rect class="code-line line-1" x="35" y="15" width="250" height="2" />
+                            <rect class="code-line line-2" x="35" y="25" width="230" height="2" />
+                            <rect class="code-line line-3" x="35" y="35" width="200" height="2" />
+                            <rect class="code-line line-4" x="35" y="45" width="250" height="2" />
+                            <rect class="code-line line-5" x="35" y="55" width="180" height="2" />
+                        </g>
+                        
+                        <!-- Текст логотипа с эффектом свечения -->
+                        <text x="50%" y="43" font-family="'Courier New', monospace" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle" class="logo-text">ESHMERKO.COM</text>
+                        
+                        <!-- Элементы кода с эффектом мерцания -->
+                        <text x="30" y="43" font-family="'Courier New', monospace" font-size="24" font-weight="bold" fill="#2ecc71" text-anchor="middle" class="bracket bracket-left">{</text>
+                        <text x="290" y="43" font-family="'Courier New', monospace" font-size="24" font-weight="bold" fill="#2ecc71" text-anchor="middle" class="bracket bracket-right">}</text>
+                        
+                        <!-- Подзаголовок в стиле кода -->
+                        <text x="50%" y="60" font-family="'Courier New', monospace" font-size="12" fill="#3498db" text-anchor="middle" class="subtitle">// python development</text>
+                    </svg>
+                    
+                    <!-- Дополнительный декоративный элемент: бинарный код -->
+                    <div class="binary-code">01001100 01001111 01000111 01001111</div>
+                </div>
+            </a>
+            
+            <!-- Стилизованная кнопка гамбургер-меню -->
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler custom-toggler" data-target="#navbarNav" data-toggle="collapse" type="button">
+                <div class="toggler-icon">
+                    <span class="toggler-line"></span>
+                    <span class="toggler-line"></span>
+                    <span class="toggler-line"></span>
+                    <div class="toggler-dots">
+                        <span class="toggler-dot"></span>
+                        <span class="toggler-dot"></span>
+                        <span class="toggler-dot"></span>
+                    </div>
+                </div>
+            </button>
+            
+            <!-- Обновленное навигационное меню -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <span class="nav-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Главная</span>
+                            <span class="nav-bracket">()</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contacts' %}">
+                            <span class="nav-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Контакты</span>
+                            <span class="nav-bracket">()</span>
+                        </a>
+                    </li>
+                    <!-- Новый пункт меню "Блог" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blog' %}">
+                            <span class="nav-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 9V5H4V9H20ZM4 11V19H20V11H4ZM6 13H12V17H6V13Z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Блог</span>
+                            <span class="nav-bracket">()</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'software_updates' %}">
+                            <span class="nav-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M21,10.12H14.22L16.96,7.3C14.23,4.6 9.81,4.5 7.08,7.2C4.35,9.91 4.35,14.28 7.08,17C9.81,19.7 14.23,19.7 16.96,17C18.32,15.65 19,14.08 19,12.1H21C21,14.08 20.12,16.65 18.36,18.39C14.85,21.87 9.15,21.87 5.64,18.39C2.14,14.92 2.11,9.28 5.62,5.81C9.13,2.34 14.76,2.34 18.27,5.81L21,3V10.12M12.5,8V12.25L16,14.33L15.28,15.54L11,13V8H12.5Z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Обновления ПО</span>
+                            <span class="nav-bracket">()</span>
+                        </a>
+                    </li>
+                    <!-- Добавляем эффект "терминальной" линии после последнего пункта -->
+                    <li class="nav-item terminal-item">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-cursor"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Декоративный элемент в нижней части навбара -->
+        <div class="navbar-decoration">
+            <svg width="100%" height="4" viewBox="0 0 1000 4" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0" y1="2" x2="1000" y2="2" stroke="#2ecc71" stroke-width="1" stroke-dasharray="5 3" />
+                <circle cx="5" cy="2" r="2" fill="#3498db" class="nav-dot nav-dot-1" />
+                <circle cx="995" cy="2" r="2" fill="#3498db" class="nav-dot nav-dot-2" />
+                <circle cx="500" cy="2" r="2" fill="#2ecc71" class="nav-dot nav-dot-3" />
+            </svg>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer-section">
+        <div class="container">
+            <!-- Декоративный элемент кода вверху футера -->
+            <div class="code-line-header mb-4">
+                <svg width="100%" height="10" viewBox="0 0 1000 10" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="5" x2="1000" y2="5" stroke="#2ecc71" stroke-width="2" stroke-dasharray="10 5" />
+                    <circle cx="20" cy="5" r="3" fill="#3498db" class="footer-dot footer-dot-1" />
+                    <circle cx="980" cy="5" r="3" fill="#3498db" class="footer-dot footer-dot-2" />
+                </svg>
+            </div>
+    
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-block">
+                        <h3>
+                            <span class="code-tag">&lt;о_нас&gt;</span>
+                        </h3>
+                        <p>Профессиональная разработка на Python с 2022 года. Специализируемся на создании телеграм ботов, парсеров данных и программного обеспечения.</p>
+                        <!-- Декоративные элементы кода -->
+                        <div class="code-decoration">
+                            <span class="code-line"># more than just code</span>
+                        </div>
+                        <span class="code-tag">&lt;/о_нас&gt;</span>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-block">
+                        <h3>
+                            <span class="code-tag">&lt;услуги&gt;</span>
+                        </h3>
+                        <ul class="footer-links">
+                            <li>
+                                <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                                </svg>
+                                <a href="#telegram-bots">Телеграм боты</a>
+                            </li>
+                            <li>
+                                <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                                </svg>
+                                <a href="#data-parsing">Парсинг данных</a>
+                            </li>
+                            <li>
+                                <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#2ecc71" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                                </svg>
+                                <a href="#software-dev">Разработка ПО</a>
+                            </li>
+                        </ul>
+                        <span class="code-tag">&lt;/услуги&gt;</span>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <div class="footer-block">
+                        <h3>
+                            <span class="code-tag">&lt;контакты&gt;</span>
+                        </h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#3498db" d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                                </svg>
+                                <a href="tel:+375447777710">+375 (44) 777-77-10</a>
+                            </div>
+                            <div class="contact-item">
+                                <svg class="footer-icon" width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="#3498db" d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/>
+                                </svg>
+                                <a href="https://t.me/eshmerko">@eshmerko</a>
+                            </div>
+                        </div>
+                        <span class="code-tag">&lt;/контакты&gt;</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Декоративный элемент с матричным кодом -->
+            <div class="matrix-decoration">
+                <svg width="100%" height="20" viewBox="0 0 1000 20" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Матричный код -->
+                    <text x="20" y="15" font-family="'Courier New', monospace" font-size="10" fill="#2ecc71" class="footer-code-line footer-line-1">0 1 0 1 0 0 1 1 0 1 0 1 0 0 1 1 0 1 0 1 0 0 1 1 0 1 0 1 0 0 1 1</text>
+                    <text x="520" y="15" font-family="'Courier New', monospace" font-size="10" fill="#2ecc71" class="footer-code-line footer-line-2">1 0 1 0 1 1 0 0 1 0 1 0 1 1 0 0 1 0 1 0 1 1 0 0 1 0 1 0 1 1 0 0</text>
+                </svg>
+            </div>
+            
+            <div class="copyright">
+                <div class="copyright-content">
+                    <svg class="copyright-logo" width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#2ecc71" d="M10.08,10.86C10.13,10.53 10.24,10.24 10.38,10C10.52,9.77 10.7,9.58 10.92,9.43C11.14,9.29 11.4,9.22 11.71,9.22C11.94,9.22 12.15,9.25 12.34,9.31C12.53,9.38 12.68,9.47 12.81,9.59C12.94,9.71 13.03,9.85 13.1,10C13.17,10.16 13.2,10.32 13.2,10.49C13.2,10.69 13.16,10.87 13.08,11.04C13,11.21 12.89,11.36 12.74,11.5C12.58,11.63 12.4,11.76 12.19,11.88C11.97,12 11.74,12.12 11.5,12.25L11.56,12.89H13.89V12H12.54C12.7,11.88 12.85,11.77 13,11.68C13.12,11.58 13.24,11.47 13.34,11.35C13.45,11.23 13.53,11.1 13.6,10.97C13.67,10.83 13.7,10.69 13.7,10.54C13.7,10.37 13.67,10.22 13.61,10.07C13.54,9.93 13.45,9.8 13.34,9.68C13.22,9.56 13.08,9.47 12.91,9.39C12.73,9.32 12.55,9.28 12.34,9.28C12.14,9.28 11.95,9.31 11.78,9.38C11.61,9.45 11.46,9.54 11.34,9.67C11.22,9.79 11.13,9.94 11.07,10.1C11,10.26 10.97,10.44 10.97,10.63H10.08V10.86M11.89,14C11.15,14 10.44,13.86 9.97,13.64C9.5,13.43 9.12,13.15 8.88,12.81C8.64,12.5 8.5,12.17 8.5,11.81C8.5,11.47 8.62,11.14 8.86,10.86C9.09,10.57 9.46,10.33 9.93,10.14C9.59,10 9.31,9.82 9.11,9.62C8.91,9.42 8.82,9.19 8.82,8.94C8.82,8.73 8.86,8.53 8.95,8.35C9.03,8.17 9.15,8 9.29,7.88C9.44,7.75 9.6,7.64 9.79,7.57C9.97,7.5 10.17,7.46 10.38,7.46C10.58,7.46 10.76,7.5 10.92,7.57C11.08,7.64 11.23,7.75 11.35,7.88C11.47,8 11.57,8.16 11.65,8.33C11.72,8.5 11.76,8.69 11.76,8.89C11.76,9.09 11.72,9.27 11.64,9.43C11.56,9.6 11.44,9.74 11.29,9.88C11.14,10 10.97,10.1 10.78,10.2C10.58,10.29 10.37,10.38 10.16,10.46L11.26,11.21C11.32,11.06 11.36,10.92 11.39,10.77H12.28C12.28,10.82 12.27,10.89 12.25,10.98C12.23,11.07 12.2,11.16 12.15,11.26C12.1,11.36 12.05,11.46 11.97,11.55C11.9,11.65 11.8,11.74 11.67,11.82L12.3,12.27C12.5,12.06 12.64,11.81 12.74,11.53C12.81,11.3 12.86,11.05 12.89,10.77H13.77C13.77,11.29 13.65,11.72 13.41,12.04C13.17,12.36 12.83,12.64 12.38,12.89L13.6,13.77C13.69,13.77 13.76,13.79 13.84,13.82C13.91,13.85 13.97,13.89 14.04,13.92C14.1,13.96 14.15,14.01 14.18,14.05C14.22,14.1 14.24,14.16 14.24,14.22C14.24,14.32 14.19,14.39 14.1,14.45C14,14.5 13.89,14.53 13.76,14.53H10.34C10.11,14.53 9.89,14.51 9.68,14.47C9.47,14.42 9.27,14.35 9.09,14.25C8.91,14.15 8.75,14.03 8.62,13.87C8.5,13.71 8.43,13.53 8.43,13.31C8.43,13.12 8.47,12.96 8.56,12.82C8.64,12.69 8.75,12.58 8.89,12.49C9.03,12.4 9.18,12.33 9.36,12.29C9.54,12.24 9.71,12.22 9.88,12.22C10.03,12.22 10.17,12.23 10.31,12.25C10.45,12.27 10.58,12.29 10.69,12.32C10.8,12.35 10.9,12.37 10.99,12.4C11.08,12.43 11.14,12.45 11.19,12.47L10.5,11.95C10.3,12.05 10.1,12.14 9.89,12.21C9.68,12.29 9.47,12.32 9.27,12.32C9.06,12.34 8.89,12.36 8.77,12.38C8.64,12.41 8.53,12.43 8.43,12.47C8.33,12.5 8.26,12.55 8.21,12.61C8.16,12.67 8.13,12.75 8.13,12.85C8.13,13 8.17,13.12 8.25,13.2C8.33,13.29 8.43,13.36 8.57,13.41C8.71,13.46 8.86,13.5 9.04,13.51C9.22,13.53 9.41,13.54 9.6,13.54H13.5L12.05,12.45C11.97,12.5 11.88,12.54 11.79,12.58C11.69,12.62 11.6,12.65 11.5,12.67C11.39,12.69 11.29,12.71 11.19,12.72C11.08,12.73 10.98,12.74 10.88,12.74L10.95,13.18H10.91H12.32C12.18,13.29 12.02,13.39 11.85,13.47C11.68,13.56 11.5,13.62 11.32,13.67C11.13,13.72 10.95,13.76 10.76,13.79C10.58,13.81 10.4,13.82 10.22,13.82L11.89,14M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/>
+                    </svg>
+                    <span>2025 eshmerko.com. Все права защищены.</span>
+                </div>
+                
+                <!-- Декоративные стилизованные элементы кода -->
+                <div class="code-decoration-bottom">
+                    <div class="code-bracket">{</div>
+                    <div class="code-text">// end of document</div>
+                    <div class="code-bracket">}</div>
+                </div>
+                
+                <!-- Добавляем бинарный код как декоративный элемент -->
+                <div class="footer-binary">01010000 01111001 01110100 01101000 01101111 01101110</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Подключение скриптов -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          "name": "eshmerko.com",
+          "description": "Профессиональная разработка телеграм ботов, парсеров данных и программного обеспечения на Python",
+          "url": "https://eshmerko.com",
+          "logo": "https://eshmerko.com/static/images/logo.svg",
+          "sameAs": ["https://t.me/eshmerko"],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+375447777710",
+            "contactType": "customer service",
+            "email": "info@eshmerko.com"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BY"
+          },
+          "offers": {
+            "@type": "Offer",
+            "itemOffered": [
+              {
+                "@type": "Service",
+                "name": "Разработка Телеграм Ботов",
+                "description": "Создание телеграм ботов любой сложности для автоматизации бизнес-процессов",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "50",
+                  "priceCurrency": "USD"
+                }
+              },
+              {
+                "@type": "Service",
+                "name": "Парсинг Данных",
+                "description": "Разработка парсеров данных для извлечения информации из веб-сайтов",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "50",
+                  "priceCurrency": "USD"
+                }
+              },
+              {
+                "@type": "Service",
+                "name": "Разработка ПО",
+                "description": "Разработка программного обеспечения на Python для решения различных задач",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "300",
+                  "priceCurrency": "USD"
+                }
+              }
+              {
+                "@type": "Service",
+                "name": "Разработка сайтов на Django",
+                "description": "Создаю мощные и безопасные веб-приложения любой сложности на Django",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "500",
+                  "priceCurrency": "USD"
+                }
+              }
+            ]
+          }
+        }
+    </script>
+
+    <!-- Скрипт для анимации и интерактивности навбара -->
+<script>
+    $(document).ready(function() {
+        // Определяем текущую страницу и добавляем класс active
+        var currentPage = window.location.pathname;
+        $('.navbar-tech .nav-link').each(function() {
+            var linkHref = $(this).attr('href').replace(/^\/|\/$/g, '');
+            if (currentPage.includes(linkHref) && linkHref !== '') {
+                $(this).addClass('active');
+            } else if (currentPage === '/' && linkHref === 'home') {
+                $(this).addClass('active');
+            }
+        });
+        
+        // Эффект сжатия навбара при скролле
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('.navbar-tech').addClass('navbar-shrink');
+            } else {
+                $('.navbar-tech').removeClass('navbar-shrink');
+            }
+        });
+        
+        // Добавляем класс показа для коллапса при открытии меню
+        $('.navbar-toggler').on('click', function() {
+            setTimeout(function() {
+                if ($('#navbarNav').hasClass('show')) {
+                    $('#navbarNav').addClass('show-animation');
+                } else {
+                    $('#navbarNav').removeClass('show-animation');
+                }
+            }, 50);
+        });
+    });
+    </script>
+</body>
+</html>

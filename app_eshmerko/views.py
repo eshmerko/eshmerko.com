@@ -1,13 +1,27 @@
 # views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Program, Update, Article
-from django.http import HttpResponse, FileResponse
+from .models import Program, Update, Article, Project, ProjectCategory, ProgramLaunch
+from django.http import HttpResponse, FileResponse, JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.contrib.syndication.views import Feed
+from .serializers import ProgramLaunchSerializer
+from django.db import transaction
+
+import json
+import requests
+from django.views.decorators.csrf import csrf_exempt
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Вставьте ваш токен и chat_id
+TELEGRAM_BOT_TOKEN = '5876243681:AAGajxM9drvH8c8w5PcB2xRdPMs36ZdBMR0'
+TELEGRAM_CHAT_ID = '314485159'
 
 def home(request):
     """Представление для главной страницы"""
@@ -138,3 +152,151 @@ class LatestArticlesFeed(Feed):
 
     def item_description(self, item):
         return item.meta_description
+
+class PortfolioListView(ListView):
+    """Отображение списка всех проектов портфолио"""
+    
+    model = Project
+    template_name = 'portfolio/portfolio_list.html'
+    context_object_name = 'portfolio_items'
+    paginate_by = 9  # Количество проектов на странице
+    
+    def get_queryset(self):
+        """Фильтрация проектов"""
+        queryset = super().get_queryset()
+        
+        # Фильтрация по категории (если указана в GET параметрах)
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = ProjectCategory.objects.all()  # Было через values_list
+                
+        # Добавление избранных проектов
+        context['featured_projects'] = Project.objects.filter(
+            is_featured=True
+        )[:3]
+        
+        return context
+
+
+class ProjectDetailView(DetailView):
+    """Отображение детальной информации о проекте"""
+    
+    model = Project
+    template_name = 'portfolio/project_detail.html'
+    context_object_name = 'project'
+    slug_url_kwarg = 'project_slug'
+    
+    def get_context_data(self, **kwargs):
+        """Добавление дополнительных данных в контекст"""
+        context = super().get_context_data(**kwargs)
+        
+        # Добавление связанных проектов той же категории
+        current_project = self.get_object()
+        context['related_projects'] = Project.objects.filter(
+            category=current_project.category
+        ).exclude(
+            id=current_project.id
+        )[:3]
+        
+        return context
+
+
+def portfolio_category_view(request, slug):
+    """Отображение проектов определенной категории по слагу"""
+    category = get_object_or_404(ProjectCategory, slug=slug)
+    projects = Project.objects.filter(category=category)
+    
+    context = {
+        'portfolio_items': projects,
+        'category': category.name,  # Для совместимости с текущим шаблоном
+        'categories': ProjectCategory.objects.all()
+    }
+    
+    return render(request, 'portfolio/portfolio_list.html', context)
+
+@csrf_exempt
+def send_order(request):
+    if request.method == 'POST':
+        try:
+            logger.info(">>> Запрос получен")
+
+            data = json.loads(request.body)
+            logger.info(f">>> Данные: {data}")
+
+            service = data.get('service')
+            name = data.get('name')
+            phone = data.get('phone')
+            message = data.get('message')
+
+            text = f"📩 Новая заявка:\n\n" \
+                   f"🛠 Услуга: {service}\n" \
+                   f"👤 Имя: {name}\n" \
+                   f"📞 Телефон: {phone}\n" \
+                   f"💬 Сообщение: {message}"
+
+            telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            payload = {'chat_id': TELEGRAM_CHAT_ID, 'text': text}
+
+            response = requests.post(telegram_url, data=payload, timeout=5)
+
+            logger.info(f">>> Telegram response: {response.status_code}")
+
+            if response.status_code == 200:
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Ошибка Telegram'}, status=500)
+
+        except json.JSONDecodeError:
+            logger.exception("Ошибка при разборе JSON")
+            return JsonResponse({'status': 'error', 'message': 'Невалидный JSON'}, status=400)
+
+        except Exception as e:
+            logger.exception("Ошибка при обработке запроса")
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
+class TrackLaunchView(APIView):
+    def post(self, request):
+        serializer = ProgramLaunchSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                with transaction.atomic():
+                    install_id = serializer.validated_data['install_id']
+                    defaults = {
+                        'app_name': serializer.validated_data['app_name'],
+                        'app_version': serializer.validated_data['app_version'],
+                        'system_platform': serializer.validated_data.get('system_platform', ''),
+                        'python_version': serializer.validated_data.get('python_version', ''),
+                    }
+
+                    # Пытаемся найти существующую запись
+                    obj = ProgramLaunch.objects.filter(install_id=install_id).first()
+
+                    if obj:
+                        # Обновление существующей записи с F-выражением
+                        ProgramLaunch.objects.filter(install_id=install_id).update(
+                            launch_count=models.F('launch_count') + 1,
+                            **defaults
+                        )
+                    else:
+                        # Создание новой записи с начальным значением 1
+                        ProgramLaunch.objects.create(
+                            install_id=install_id,
+                            launch_count=1,
+                            **defaults
+                        )
+
+                    return Response({'status': 'success'}, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                logger.error(f"Launch tracking error: {str(e)}")
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

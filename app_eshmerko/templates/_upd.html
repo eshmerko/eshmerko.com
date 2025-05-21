@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Обновления программного обеспечения{% endblock %}
+
+{% block content %}
+<div class="update-container">
+    <div class="update-header">
+        <svg class="header-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20,10 Q40,5 50,20 T90,30 L80,85 Q70,95 50,85 T10,70 Z" fill="rgba(46, 204, 113, 0.1)"/>
+        </svg>
+        <h1 class="main-title">Обновления ПО</h1>
+        <p class="subtitle">Актуальные версии программного обеспечения</p>
+    </div>
+
+    {% if programs_with_updates %}
+        {% for item in programs_with_updates %}
+            <div class="update-card">
+                <div class="card-header">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="#2ecc71" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17,18H7V16H17V18M10.3,14L7,10.7L8.4,9.3L10.3,11.2L15.6,5.9L17,7.3L10.3,14Z"/>
+                        </svg>
+                    </div>
+                    <div class="program-info">
+                        <h2>{{ item.program.name }}</h2>
+                        <p class="program-description">{{ item.program.description }}</p>
+                    </div>
+                </div>
+                
+                <div class="update-list">
+                    {% if item.updates %}
+                        {% for update in item.updates %}
+                            <div class="update-item">
+                                <div class="version-badge">
+                                    <span class="version">v{{ update.version }}</span>
+                                    <span class="date">{{ update.release_date|date:"d.m.Y" }}</span>
+                                </div>
+                                <div class="update-content">
+                                    <p>{{ update.description }}</p>
+                                    <div class="update-actions">
+                                        {% if update.file %}
+                                            <a href="{% url 'download_update' update.id %}" 
+                                               class="download-btn">
+                                                <i class="fas fa-download"></i>
+                                                Скачать
+                                                <span class="download-count">{{ update.download_count }}</span>
+                                            </a>
+                                        {% endif %}
+                                        <div class="status-badge {% if update.is_active %}active{% else %}archive{% endif %}">
+                                            {% if update.is_active %}
+                                                <i class="fas fa-check-circle"></i> Активно
+                                            {% else %}
+                                                <i class="fas fa-archive"></i> Архив
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" width="48" height="48">
+                                <path fill="#95a5a6" d="M11 15H13V17H11V15M11 7H13V13H11V7M12 2C6.47 2 2 6.5 2 12C2 17.5 6.5 22 12 22S22 17.5 22 12 17.5 2 12 2M12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4S20 7.58 20 12C20 16.42 16.42 20 12 20"/>
+                            </svg>
+                            <p>Нет доступных обновлений</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <svg viewBox="0 0 24 24" width="64" height="64">
+                <path fill="#95a5a6" d="M20 12C20 8.64 17.93 5.77 15 4.59V5C15 6.1 14.1 7 13 7H11V9C11 9.55 10.55 10 10 10H8V12H14C15.1 12 16 12.9 16 14V15H17C18.1 15 19 15.9 19 17V20H20C20.55 20 21 20.45 21 21V22H3V21C3 20.45 3.45 20 4 20H5V17C5 15.9 5.9 15 7 15H8V14C8 13.45 8.45 13 9 13H11V11H5V5C5 3.9 5.9 3 7 3H13C14.1 3 15 3.9 15 5V9H17C18.1 9 19 8.1 19 7V5.59C21.93 6.77 24 9.64 24 13C24 16.86 21.12 20.22 17.39 20.78L15.68 12H18L15 18L12 12H14.6L13.29 16.7C12.3 17.19 11.16 17.5 10 17.5C7 17.5 4.03 15.54 3.18 12H5.15C5.99 14.34 8.19 16 10.73 16C13.37 16 15.5 13.87 15.5 11.23V11C15.5 8.55 13.45 6.5 11 6.5H8.5C8.5 4.57 10.07 3 12 3H18C19.1 3 20 3.9 20 5V10.23C21.81 11.5 23 13.61 23 16C23 19.31 20.31 22 17 22H15V23H22V21H17C19.76 21 22 18.76 22 16Z"/>
+            </svg>
+            <p>Программы не найдены</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .update-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .update-header {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .header-shape {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.15;
+        z-index: -1;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .main-title:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 1.2rem;
+        margin-top: 10px;
+    }
+
+    .update-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .update-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    .card-header {
+        padding: 25px;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 2px solid #ecf0f1;
+    }
+
+    .program-icon {
+        background: rgba(46, 204, 113, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .program-info h2 {
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+
+    .program-description {
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+    .update-list {
+        padding: 20px;
+    }
+
+    .update-item {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        margin-bottom: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .update-item:hover {
+        background: #ffffff;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .version-badge {
+        min-width: 100px;
+        text-align: center;
+        padding: 8px;
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .version {
+        font-weight: 600;
+        color: #3498db;
+        margin-bottom: 5px;
+    }
+
+    .date {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    .update-content {
+        flex: 1;
+    }
+
+    .update-content p {
+        color: #34495e;
+        margin: 0 0 15px 0;
+    }
+
+    .update-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .download-btn {
+        background: #3498db;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+    }
+
+    .download-count {
+        background: rgba(255,255,255,0.2);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-badge.active {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+    }
+
+    .status-badge.archive {
+        background: rgba(149, 165, 166, 0.1);
+        color: #7f8c8d;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #95a5a6;
+    }
+
+    .empty-state svg {
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .update-item {
+            flex-direction: column;
+        }
+        
+        .version-badge {
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .update-actions {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+{% endblock %}
