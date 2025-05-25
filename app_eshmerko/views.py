@@ -12,6 +12,7 @@ from django.contrib.syndication.views import Feed
 from .serializers import ProgramLaunchSerializer
 from django.db import transaction
 from django.db.models import F  # Добавлен импорт F
+from django.utils import timezone
 
 import json
 import requests
@@ -263,6 +264,25 @@ def send_order(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
 
+def send_telegram_notification(message):
+    """Отправка уведомления в Telegram."""
+    telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        'chat_id': TELEGRAM_CHAT_ID,
+        'text': message,
+        'parse_mode': 'Markdown'
+    }
+    try:
+        response = requests.post(telegram_url, json=payload, timeout=5)
+        if response.status_code != 200:
+            logger.error(f"Failed to send Telegram notification: {response.status_code}, {response.text}")
+            return False
+        logger.info("Telegram notification sent successfully")
+        return True
+    except Exception as e:
+        logger.error(f"Error sending Telegram notification: {str(e)}")
+        return False
+
 class TrackLaunchView(APIView):
     def post(self, request):
         serializer = ProgramLaunchSerializer(data=request.data)
@@ -277,22 +297,41 @@ class TrackLaunchView(APIView):
                         'python_version': serializer.validated_data.get('python_version', ''),
                     }
 
-                    # Пытаемся найти существующую запись
+                    # Проверяем, существует ли запись
                     obj = ProgramLaunch.objects.filter(install_id=install_id).first()
+                    is_new = not obj
 
                     if obj:
-                        # Обновление существующей записи с F-выражением
+                        # Обновление существующей записи
                         ProgramLaunch.objects.filter(install_id=install_id).update(
                             launch_count=F('launch_count') + 1,
                             **defaults
                         )
+                        action = "обновлена"
                     else:
-                        # Создание новой записи с начальным значением 1
+                        # Создание новой записи
                         ProgramLaunch.objects.create(
                             install_id=install_id,
                             launch_count=1,
                             **defaults
                         )
+                        action = "создана"
+
+                    # Формируем сообщение для Telegram
+                    message = (
+                        f"📊 *Запуск программы {'(новая установка)' if is_new else '(повторный запуск)'}*\n\n"
+                        f"🖥 *Программа*: {defaults['app_name']} v{defaults['app_version']}\n"
+                        f"🔑 *ID установки*: `{install_id}`\n"
+                        f"💻 *Платформа*: {defaults['system_platform'] or 'Не указана'}\n"
+                        f"🐍 *Python*: {defaults['python_version'] or 'Не указана'}\n"
+                        f"🔢 *Количество запусков*: {1 if is_new else obj.launch_count + 1}\n"
+                        f"🕒 *Время*: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                        f"📋 *Действие*: Запись {action}"
+                    )
+
+                    # Отправляем уведомление в Telegram
+                    if not send_telegram_notification(message):
+                        logger.warning("Telegram notification failed, but launch tracked successfully")
 
                     return Response({'status': 'success'}, status=status.HTTP_200_OK)
 
