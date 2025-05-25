@@ -10,9 +10,18 @@ class UpdateSerializer(serializers.ModelSerializer):
 class ProgramLaunchSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProgramLaunch
-        fields = '__all__'
+        fields = ['install_id', 'app_name', 'app_version', 'system_platform', 'python_version']
         extra_kwargs = {
-            'install_id': {'required': True},
-            'app_name': {'required': True},
-            'app_version': {'required': True}
+            'install_id': {'validators': []},  # Disable uniqueness validator
+            'system_platform': {'required': False, 'allow_blank': True},
+            'python_version': {'required': False, 'allow_blank': True},
         }
+
+    def validate_install_id(self, value):
+        """Ensure install_id is a valid UUID."""
+        import uuid
+        try:
+            uuid.UUID(str(value))
+        except ValueError:
+            raise serializers.ValidationError("Invalid UUID format.")
+        return value

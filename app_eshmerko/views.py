@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.syndication.views import Feed
 from .serializers import ProgramLaunchSerializer
 from django.db import transaction
+from django.db.models import F  # Добавлен импорт F
 
 import json
 import requests
@@ -261,6 +262,7 @@ def send_order(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=405)
+
 class TrackLaunchView(APIView):
     def post(self, request):
         serializer = ProgramLaunchSerializer(data=request.data)
@@ -281,7 +283,7 @@ class TrackLaunchView(APIView):
                     if obj:
                         # Обновление существующей записи с F-выражением
                         ProgramLaunch.objects.filter(install_id=install_id).update(
-                            launch_count=models.F('launch_count') + 1,
+                            launch_count=F('launch_count') + 1,
                             **defaults
                         )
                     else:
